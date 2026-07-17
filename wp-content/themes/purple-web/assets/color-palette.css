@@ -1,0 +1,51 @@
+.has-black-color { 
+	color: #292929;
+}
+.has-black-background-color {
+	background-color: #292929; 
+}
+
+.has-dark-color { 
+	color: #3a343e;
+}
+.has-dark-background-color {
+	background-color: #3a343e; 
+}
+
+
+.has-purple-color { 
+	color: #614881;
+}
+.has-purple-background-color {
+	background-color: #614881; 
+}
+
+.has-accent-green-color { 
+	color: #B9EB8A;
+}
+.has-accent-green-background-color {
+	background-color: #B9EB8A; 
+}
+
+.has-grey-color { 
+	color: #828282;
+}
+.has-grey-background-color {
+	background-color: #828282; 
+}
+
+
+.has-light-grey-color { 
+	color: #ded9e2;
+}
+.has-light-grey-background-color {
+	background-color: #ded9e2; 
+}
+
+.has-white-color { 
+	color: #fff;
+}
+.has-white-background-color {
+	background-color: #fff; 
+}
+

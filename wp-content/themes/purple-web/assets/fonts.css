@@ -1,0 +1,221 @@
+@font-face {
+    font-family: "Proxima";
+    font-weight:300;
+    src:  
+    url(fonts/proximanova_light.ttf) format("truetype"), 
+    url(fonts/proximanova_light.woff) format("woff"), 
+    url(fonts/proximanova_light.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Proxima";
+    font-weight:400;
+    src:  
+    url(fonts/proximanova_regular.ttf) format("truetype"), 
+    url(fonts/proximanova_regular.woff) format("woff"), 
+    url(fonts/proximanova_regular.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Proxima";
+    font-weight:700;
+    src:  
+    url(fonts/proximanova_bold.ttf) format("truetype"), 
+    url(fonts/proximanova_bold.woff) format("woff"), 
+    url(fonts/proximanova_bold.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Proxima";
+    font-weight:800;
+    src:  
+    url(fonts/proximanova_black.ttf) format("truetype"), 
+    url(fonts/proximanova_black.woff) format("woff"), 
+    url(fonts/proximanova_black.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Zector";
+    font-weight: 400;
+    src:
+    url(fonts/Zector.ttf) format("truetype"), 
+    url(fonts/Zector.woff) format("woff"), 
+    url(fonts/Zector.woff2) format("woff2");
+    font-display: swap;
+  }
+
+
+  @font-face {
+    font-family: "Advent";
+    font-weight: 400;
+    src:
+    url(fonts/AdventPro-Regular.ttf) format("truetype"), 
+    url(fonts/AdventPro-Regular.woff) format("woff"), 
+    url(fonts/AdventPro-Regular.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Advent";
+    font-weight: 600;
+    src:
+    url(fonts/AdventPro-SemiBold.ttf) format("truetype"), 
+    url(fonts/AdventPro-SemiBold.woff) format("woff"), 
+    url(fonts/AdventPro-SemiBold.woff2) format("woff2");
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Advent";
+    font-weight: 700;
+    src:
+    url(fonts/AdventPro-Bold.ttf) format("truetype"), 
+    url(fonts/AdventPro-Bold.woff) format("woff"), 
+    url(fonts/AdventPro-Bold.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:200;
+    src:  
+    url(fonts/Cruinn_Thin.ttf) format("truetype"), 
+    url(fonts/Cruinn_Thin.woff) format("woff"), 
+    url(fonts/Cruinn_Thin.woff2) format("woff2");
+    font-display: swap;
+  }
+
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:300;
+    src:  
+    url(fonts/Cruinn_Light.ttf) format("truetype"), 
+    url(fonts/Cruinn_Light.woff) format("woff"), 
+    url(fonts/Cruinn_Light.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:400;
+    src:  
+    url(fonts/Cruinn_Regular.ttf) format("truetype"), 
+    url(fonts/Cruinn_Regular.woff) format("woff"), 
+    url(fonts/Cruinn_Regular.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:600;
+    src:  
+    url(fonts/Cruinn_Medium.ttf) format("truetype"), 
+    url(fonts/Cruinn_Medium.woff) format("woff"), 
+    url(fonts/Cruinn_Medium.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:700;
+    src:  
+    url(fonts/Cruinn_Bold.ttf) format("truetype"), 
+    url(fonts/Cruinn_Bold.woff) format("woff"), 
+    url(fonts/Cruinn_Bold.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+  font-family: "Cruinn";
+    font-weight:800;
+    src:  
+    url(fonts/Cruinn_Black.ttf) format("truetype"), 
+    url(fonts/Cruinn_Black.woff) format("woff"), 
+    url(fonts/Cruinn_Black.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Stetica";
+    font-weight:300;
+    src:  
+    url(fonts/AAStetica-Light.otf) format("opentype"), 
+    url(fonts/AAStetica-Light.woff) format("woff"), 
+    url(fonts/AAStetica-Light.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Stetica";
+    font-weight:400;
+    src:  
+    url(fonts/AAStetica-Light.otf) format("opentype"), 
+    url(fonts/AAStetica-Light.woff) format("woff"), 
+    url(fonts/AAStetica-Light.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Stetica";
+    font-weight:600;
+    src:  
+    url(fonts/AAStetica-Medium.otf) format("opentype"), 
+    url(fonts/AAStetica-Medium.woff) format("woff"), 
+    url(fonts/AAStetica-Medium.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Stetica";
+    font-weight:700;
+    src:  
+    url(fonts/AAStetica-Bold.otf) format("opentype"), 
+    url(fonts/AAStetica-Bold.woff) format("woff"), 
+    url(fonts/AAStetica-Bold.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  
+  @font-face {
+    font-family: "LTSuperior";
+    font-weight:400;
+    src:  
+    url(fonts/LTSuperior-Regular.otf) format("opentype"), 
+    url(fonts/LTSuperior-Regular.woff) format("woff"), 
+    url(fonts/LTSuperior-Regular.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "LTSuperior";
+    font-weight:500;
+    src:  
+    url(fonts/LTSuperior-Medium.otf) format("opentype"), 
+    url(fonts/LTSuperior-Medium.woff) format("woff"), 
+    url(fonts/LTSuperior-Medium.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "LTSuperior";
+    font-weight:600;
+    src:  
+    url(fonts/LTSuperior-Semibold.otf) format("opentype"), 
+    url(fonts/LTSuperior-Semibold.woff) format("woff"), 
+    url(fonts/LTSuperior-Semibold.woff2) format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "LTSuperior";
+    font-weight:700;
+    src:  
+    url(fonts/LTSuperior-Bold.otf) format("opentype"), 
+    url(fonts/LTSuperior-Bold.woff) format("woff"), 
+    url(fonts/LTSuperior-Bold.woff2) format("woff2");
+    font-display: swap;
+  }
