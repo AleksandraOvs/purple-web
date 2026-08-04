@@ -176,6 +176,16 @@ function purple_web_scripts()
 
 	wp_enqueue_script('purple-web-scripts', get_stylesheet_directory_uri() . '/js/scripts.js', array(), null, true);
 	wp_enqueue_script('imask-scripts', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js', array(), null, true);
+	wp_enqueue_script('ajax-scripts', get_stylesheet_directory_uri() . '/js/seo-load.js', array(), null, true);
+
+	wp_localize_script(
+		'ajax-scripts',
+		'seo_ajax',
+		array(
+			'ajax_url' => admin_url('admin-ajax.php')
+		)
+	);
+
 	//wp_enqueue_script('spikmi-script', 'https://spikmi.org/Widget?Id=35203', array(), null, true);
 
 	if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -244,6 +254,8 @@ require get_template_directory() . '/inc/post-types.php';
  * Custom post colors
  */
 require get_template_directory() . '/inc/mypalette.php';
+
+require get_template_directory() . '/inc/ajax-content.php';
 
 /**
  * Load Jetpack compatibility file.
@@ -329,32 +341,33 @@ function fill_template_name_column($colname, $post_id)
 add_filter('wpcf7_autop_or_not', '__return_false');
 
 // Универсальная функция нумерованной пагинации
-function nums_pagination() {
-    global $wp_query;
+function nums_pagination()
+{
+	global $wp_query;
 
-    // Пагинация выводится, только если есть больше одной страницы
-    if ( $wp_query->max_num_pages <= 1 ) {
-        return;
-    }
+	// Пагинация выводится, только если есть больше одной страницы
+	if ($wp_query->max_num_pages <= 1) {
+		return;
+	}
 
-    echo '<nav class="pagination" role="navigation">';
+	echo '<nav class="pagination" role="navigation">';
 
 	$prev = '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="16" viewBox="0 0 50 16" fill="none">
   <path d="M48.9998 6.99992L1.49976 6.99992C0.947471 6.99992 0.499756 7.44764 0.499756 7.99992C0.499756 8.55221 0.947471 8.99992 1.49976 8.99992L48.9998 8.99992C49.552 8.99992 49.9998 8.55221 49.9998 7.99992C49.9998 7.44764 49.552 6.99992 48.9998 6.99992Z" fill="black"/>
   <path d="M0.224365 7.36907C-0.0959851 7.76184 -0.0733914 8.34084 0.292725 8.70696L7.29272 15.707L7.3689 15.7753C7.76167 16.0957 8.34067 16.0731 8.70679 15.707C9.0729 15.3408 9.0955 14.7618 8.77515 14.3691L8.70679 14.2929L2.41382 7.99992L8.70679 1.70696C9.09731 1.31643 9.09731 0.683417 8.70679 0.292893C8.31626 -0.0976311 7.68325 -0.0976311 7.29272 0.292893L0.292725 7.29289L0.224365 7.36907Z" fill="black"/>
 </svg>';
 
-$next = '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="16" viewBox="0 0 50 16" fill="none">
+	$next = '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="16" viewBox="0 0 50 16" fill="none">
   <path d="M1 6.99992L48.5 6.99992C49.0523 6.99992 49.5 7.44764 49.5 7.99992C49.5 8.55221 49.0523 8.99992 48.5 8.99992L1 8.99992C0.447715 8.99992 -8.8941e-09 8.55221 0 7.99992C7.32521e-07 7.44764 0.447716 6.99992 1 6.99992Z" fill="black"/>
   <path d="M49.7754 7.36907C50.0957 7.76184 50.0731 8.34084 49.707 8.70696L42.707 15.707L42.6309 15.7753C42.2381 16.0957 41.6591 16.0731 41.293 15.707C40.9269 15.3408 40.9043 14.7618 41.2246 14.3691L41.293 14.2929L47.5859 7.99992L41.293 1.70696C40.9024 1.31643 40.9024 0.683417 41.293 0.292893C41.6835 -0.0976311 42.3165 -0.0976311 42.707 0.292893L49.707 7.29289L49.7754 7.36907Z" fill="black"/>
 </svg>';
 
-    the_posts_pagination( array(
-        'mid_size'           => 2,
-        'prev_text'          => __($prev, 'your-text-domain'),
-        'next_text'          => __($next, 'your-text-domain'),
-        'screen_reader_text' => __('Навигация по страницам', 'your-text-domain'),
-    ) );
+	the_posts_pagination(array(
+		'mid_size'           => 2,
+		'prev_text'          => __($prev, 'your-text-domain'),
+		'next_text'          => __($next, 'your-text-domain'),
+		'screen_reader_text' => __('Навигация по страницам', 'your-text-domain'),
+	));
 
-    echo '</nav>';
+	echo '</nav>';
 }

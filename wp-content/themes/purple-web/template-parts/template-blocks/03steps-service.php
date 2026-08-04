@@ -24,7 +24,7 @@ if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_steps')) {
                     foreach ($steps as $step) {
 
                     ?>
-                        <li class="steps-list__item element-toopacity">
+                        <li class="steps-list__item">
 
                             <?php
                             if ($step_icon = $step['crb_step_image']) {

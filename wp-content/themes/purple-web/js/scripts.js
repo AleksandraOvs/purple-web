@@ -1,18 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // let body = $('body');
-    // let menu = $('.main-navigation');
-    // let textDefault = 'Меню';
-    // let textOther = 'Закрыть';
-
-    // $(document).on('click', '.menu-toggle', function (event) {
-
-    //     event.preventDefault();
-    //     $(this).toggleClass('_open');
-    //     menu.toggleClass('_open');
-    //     body.toggleClass('_fixed');
-    // });
-
     const button = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.main-navigation');
     const body = document.querySelector('body');
@@ -165,77 +152,171 @@ document.addEventListener("DOMContentLoaded", () => {
     arrowUp();
 });
 
-jQuery(document).ready(function ($) {
+//Функции для инициализации скриптов
 
-    // $('.burger').click(function (event) {
-    //     $('body, .overlay, .burger,.navbar-nav').toggleClass('active')
-    // });
-    $('img, em').fadeIn(1500);
-    // $('p, span, h2, h3'). fadeIn(1500);
 
-    $('.js-video-block').click(function (event) {
-        var video_file = $(this).data('file');
-        $(this).addClass('hidden-poster');
-        $(this).html('');
-        if ($(this).html() == '') {
-            $(this).append($("<iframe />").attr({ src: video_file, frameborder: 0, "allowfullscreen": "", allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' }));
+
+// Плавное появление изображений
+function initFadeElements() {
+
+    document.querySelectorAll('img, em').forEach((element) => {
+
+        if (element.dataset.fadeInitialized) {
+            return;
         }
+
+        element.dataset.fadeInitialized = 'true';
+
+        element.animate(
+            [
+                { opacity: 0 },
+                { opacity: 1 }
+            ],
+            {
+                duration: 1500,
+                fill: 'forwards'
+            }
+        );
+
     });
 
-    function onEntry(entry) {
-        entry.forEach(change => {
-            if (change.isIntersecting) {
-                change.target.classList.add('element-show');
-            }
+}
+
+
+// Видео
+function initVideoBlocks() {
+
+    document.querySelectorAll('.js-video-block').forEach((block) => {
+
+        if (block.dataset.initialized) {
+            return;
+        }
+
+        block.dataset.initialized = 'true';
+
+        block.addEventListener('click', function () {
+
+            const videoFile = this.dataset.file;
+
+            this.classList.add('hidden-poster');
+            this.innerHTML = '';
+
+            const iframe = document.createElement('iframe');
+
+            iframe.src = videoFile;
+            iframe.frameBorder = 0;
+            iframe.allowFullscreen = true;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+
+            this.appendChild(iframe);
+
         });
-    }
-    let options = { threshold: [0.5] };
-    let observer = new IntersectionObserver(onEntry, options);
-    let elements = document.querySelectorAll('.element-toright, .element-toleft, .element-totop, .element-tobottom, .element-toopacity');
-    for (let elm of elements) {
-        observer.observe(elm);
-    }
+
+    });
+
+}
+
+
+// Анимация при скролле
+function initIntersectionAnimations() {
+    console.log('initIntersectionAnimations');
+
+    const observer = new IntersectionObserver((entries) => {
+
+        entries.forEach((entry) => {
+
+            if (entry.isIntersecting) {
+                entry.target.classList.add('element-show');
+            }
+
+        });
+
+    }, {
+        threshold: 0.5
+    });
+
+    document.querySelectorAll(
+        '.element-toright, .element-toleft, .element-totop, .element-tobottom, .element-toopacity'
+    ).forEach((element) => {
+
+        console.log(element);
+        if (element.dataset.observed) {
+            return;
+        }
+
+        element.dataset.observed = 'true';
+
+        observer.observe(element);
+
+    });
+
+}
+
+// Заполнение скрытого поля названием страницы
+function initPageTitleField() {
 
     const titleField = document.querySelector('input[name="page_title"]');
+
     if (titleField) {
         titleField.value = document.title;
     }
 
-});
+}
 
-const stackSlider = new Swiper('.stack-slider', {
-    slidesPerView: 5,
-    spaceBetween: 10,
+//слайдер 
+function initStackSlider() {
 
-    loop: true,
+    const stackSlider = new Swiper('.stack-slider', {
+        slidesPerView: 5,
+        spaceBetween: 10,
 
-    speed: 5000, // скорость движения (больше = медленнее)
+        loop: true,
 
-    autoplay: {
-      delay: 0,
-       disableOnInteraction: false,
-       pauseOnMouseEnter: true,
-    },
+        speed: 5000, // скорость движения (больше = медленнее)
 
-    freeMode: {
-        enabled: true,
-        momentum: false,
-    },
-
-    breakpoints: {
-//         320: {
-//             slidesPerView: 2,
-//             spaceBetween: 20,
-//         },
-
-        576: {
-            slidesPerView: 3,
-            spaceBetween: 10,
+        autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
         },
 
-        992: {
-            slidesPerView: 5,
-            spaceBetween: 20,
+        freeMode: {
+            enabled: true,
+            momentum: false,
+        },
+
+        breakpoints: {
+            //         320: {
+            //             slidesPerView: 2,
+            //             spaceBetween: 20,
+            //         },
+
+            576: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+            },
+
+            992: {
+                slidesPerView: 5,
+                spaceBetween: 20,
+            }
         }
-    }
+    });
+
+}
+
+// Общая инициализация
+function initCommon() {
+
+    initFadeElements();
+    initVideoBlocks();
+    initIntersectionAnimations();
+    initPageTitleField();
+    initStackSlider();
+
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCommon();
 });
