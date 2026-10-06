@@ -41,10 +41,11 @@
 
                                 <?php if (!empty($service['crb_service_link'])) : ?>
 
+
                                     <!-- <a class="btn" href="<?php //echo esc_url($service['crb_service_link']); 
                                                                 ?>" target="_blank">Подробнее</a> -->
 
-                                    <a class="btn" href="javascript:;" data-fancybox data-src="#service-popup">
+                                    <a class="btn" href="<?php echo $service['crb_service_link'] ?>">
                                         Подробнее
                                     </a>
 
