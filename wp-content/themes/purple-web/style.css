@@ -738,6 +738,7 @@ a:active {
 	transition: all .5s ease-in-out;
 	width: max-content;
 	text-decoration: none;
+	line-height: 1;
 }
 
 .btn:hover {
