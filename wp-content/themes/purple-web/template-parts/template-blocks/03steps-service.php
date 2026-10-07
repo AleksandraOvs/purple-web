@@ -5,13 +5,13 @@ if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_why_list')) {
         <div class="fixed-container">
             <div class="section-heading">
                 <?php
-                if ($steps_head = carbon_get_post_meta(get_the_ID(), 'crb_swhy_head')) {
+                if ($steps_head = carbon_get_post_meta(get_the_ID(), 'crb_why_head')) {
                     echo $steps_head;
                 }
                 ?>
 
                 <?php
-                if ($steps_desc = carbon_get_post_meta(get_the_ID(), 'crb_swhy_desc')) {
+                if ($steps_desc = carbon_get_post_meta(get_the_ID(), 'crb_why_desc')) {
                     echo '<div class="section-description">' . $steps_desc . '</div>';
                 }
                 ?>
