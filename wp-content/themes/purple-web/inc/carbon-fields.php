@@ -181,6 +181,39 @@ function site_carbon()
                 )),
         ))
 
+        ->add_tab(__('Состав услуги'), array(
+            Field::make('image', 'crb_service_parts_picture', 'Изображение')
+                ->set_width(50),
+
+            Field::make('rich_text', 'crb_service_parts_head', 'Заголовок')
+                ->set_width(50),
+            Field::make('rich_text', 'crb_service_parts_desc', 'Подзаголовок')
+                ->set_width(50),
+
+            Field::make('rich_text', 'crb_service_parts_text_content', 'Подзаголовок')
+                ->set_width(50),
+
+
+
+            // Field::make('complex', 'crb_service_parts_list', 'Список')
+            //     ->set_layout('tabbed-vertical')
+            //     ->add_fields(array(
+            //         Field::make('image', 'crb_service_parts_item_image', 'Иконка элемента')
+            //             ->set_width(15),
+
+            //         Field::make('color', 'crb_service_parts_item_image_bg', 'Фон элемента')
+            //             ->set_width(15),
+
+            //         Field::make('text', 'crb_service_parts_item_head', 'Заголовок элемента')
+            //             ->set_width(50),
+
+            //         Field::make('rich_text', 'crb_service_parts_item_text', 'Текст элемента')
+            //             ->set_width(50),
+            //     )),
+
+
+        ))
+
         ->add_tab(__('Форма обратной связи'), array(
             Field::make('text', 'crb_form_h2', 'Заголовок формы')
                 ->set_width(50),

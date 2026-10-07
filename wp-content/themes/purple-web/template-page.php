@@ -13,6 +13,8 @@
     ?>
     <?php get_template_part('template-parts/template-blocks/03steps-service')
     ?>
+    <?php get_template_part('template-parts/template-blocks/04service-parts')
+    ?>
     <?php //get_template_part('template-parts/template-blocks/04page-form') 
     ?>
     <?php //get_template_part('template-parts/template-blocks/05page-faq') 
