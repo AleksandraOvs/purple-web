@@ -11,7 +11,7 @@
 
     <?php get_template_part('template-parts/template-blocks/02about-service')
     ?>
-    <?php get_template_part('template-parts/template-blocks/03steps-service')
+    <?php //get_template_part('template-parts/template-blocks/03steps-service')
     ?>
     <?php //get_template_part('template-parts/template-blocks/04page-form') 
     ?>
