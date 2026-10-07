@@ -158,21 +158,21 @@ function site_carbon()
 
         ))
 
-        ->add_tab(__('Этапы'), array(
-            Field::make('rich_text', 'crb_steps_head', 'Заголовок')
+        ->add_tab(__('Почему ВП'), array(
+            Field::make('rich_text', 'crb_why_head', 'Заголовок')
                 ->set_width(50),
-            Field::make('rich_text', 'crb_steps_desc', 'Подзаголовок')
+            Field::make('rich_text', 'crb_why_desc', 'Подзаголовок')
                 ->set_width(50),
 
-            Field::make('complex', 'crb_steps', 'Контент этапа')
+            Field::make('complex', 'crb_why_list', 'Контент этапа')
                 ->add_fields(array(
-                    Field::make('image', 'crb_step_image', 'Иконка этапа')
+                    Field::make('image', 'crb_why_image', 'Иконка этапа')
                         ->set_width(15),
-                    Field::make('color', 'crb_step_image_bg', 'Фон иконки')
+                    Field::make('color', 'crb_why_image_bg', 'Фон иконки')
                         ->set_width(15),
-                    Field::make('text', 'crb_step_head', 'Заголовок этапа')
+                    Field::make('text', 'crb_why_head', 'Заголовок этапа')
                         ->set_width(20),
-                    Field::make('rich_text', 'crb_step_text', 'Текст этапа')
+                    Field::make('rich_text', 'crb_why_text', 'Текст этапа')
                         ->set_width(50),
                 )),
         ))

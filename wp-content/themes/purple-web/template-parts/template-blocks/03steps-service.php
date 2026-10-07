@@ -1,17 +1,17 @@
 <?php
-if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_steps')) {
+if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_why_list')) {
 ?>
     <section class="section-steps">
         <div class="fixed-container">
             <div class="section-heading">
                 <?php
-                if ($steps_head = carbon_get_post_meta(get_the_ID(), 'crb_steps_head')) {
+                if ($steps_head = carbon_get_post_meta(get_the_ID(), 'crb_swhy_head')) {
                     echo $steps_head;
                 }
                 ?>
 
                 <?php
-                if ($steps_desc = carbon_get_post_meta(get_the_ID(), 'crb_steps_desc')) {
+                if ($steps_desc = carbon_get_post_meta(get_the_ID(), 'crb_swhy_desc')) {
                     echo '<div class="section-description">' . $steps_desc . '</div>';
                 }
                 ?>
@@ -27,10 +27,10 @@ if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_steps')) {
                         <li class="steps-list__item">
 
                             <?php
-                            if ($step_icon = $step['crb_step_image']) {
+                            if ($step_icon = $step['crb_why_image']) {
                                 $step_icon_url = wp_get_attachment_image_url($step_icon, 'full');
                             ?>
-                                <div class="step-img" <?php if ($bg_color = $step['crb_step_image_bg']) : echo 'style="background-color:' . $bg_color . '"';
+                                <div class="step-img" <?php if ($bg_color = $step['crb_why_image_bg']) : echo 'style="background-color:' . $bg_color . '"';
                                                         endif; ?>><img src="<?php echo $step_icon_url ?>" alt=""></div>
                             <?php
                             } else {
@@ -39,11 +39,11 @@ if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_steps')) {
                             ?>
 
                             <div class="step_head">
-                                <?php echo '<h3>' . $step['crb_step_head'] . '</h3>' ?>
+                                <?php echo '<h3>' . $step['crb_why_head'] . '</h3>' ?>
                             </div>
 
                             <div class="step_description">
-                                <?php echo $step['crb_step_text'] ?>
+                                <?php echo $step['crb_why_text'] ?>
                             </div>
                             <?php
                             $i++; ?>
