@@ -165,13 +165,17 @@ function site_carbon()
                 ->set_width(50),
 
             Field::make('complex', 'crb_why_list', 'Контент этапа')
+                ->set_layout('tabbed-vertical')
                 ->add_fields(array(
                     Field::make('image', 'crb_why_image', 'Иконка этапа')
                         ->set_width(15),
+
                     Field::make('color', 'crb_why_image_bg', 'Фон иконки')
                         ->set_width(15),
+
                     Field::make('text', 'crb_why_head', 'Заголовок этапа')
                         ->set_width(20),
+
                     Field::make('rich_text', 'crb_why_text', 'Текст этапа')
                         ->set_width(50),
                 )),
