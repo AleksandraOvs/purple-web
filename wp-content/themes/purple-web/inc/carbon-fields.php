@@ -280,28 +280,28 @@ function site_carbon()
                 ))
         ));
 
-    // Container::make('post_meta', 'Стоимость услуг')
-    //     ->show_on_page('price')
-    //     //->where( 'post_type', '=', 'portfolio' )
-    //     ->add_fields(array(
-    //         Field::make('complex', 'crb_price_chapters', 'Раздел')
-    //             ->add_fields('chapters_titles', 'Добавить раздел', array(
-    //                 Field::make('text', 'crb_price_chapter', 'Название')
-    //                     ->set_width(50),
-    //                 Field::make('rich_text', 'crb_price_chapter_desc', 'Краткое описание')
-    //                     ->set_width(50),
+    Container::make('post_meta', 'Стоимость услуг')
+        ->show_on_page('price')
+        //->where( 'post_type', '=', 'portfolio' )
+        ->add_fields(array(
+            Field::make('complex', 'crb_price_chapters', 'Раздел')
+                ->add_fields('chapters_titles', 'Добавить раздел', array(
+                    Field::make('text', 'crb_price_chapter', 'Название')
+                        ->set_width(50),
+                    Field::make('rich_text', 'crb_price_chapter_desc', 'Краткое описание')
+                        ->set_width(50),
 
-    //                 Field::make('complex', 'crb_price_services', 'Услуги раздела')
-    //                     ->add_fields('chapters_services', 'Добавить услугу', array(
-    //                         Field::make('text', 'crb_service_head', 'Название услуги')
-    //                             ->set_width(33),
-    //                         Field::make('rich_text', 'crb_service_desc', 'Описание услуги')
-    //                             ->set_width(33),
-    //                         Field::make('text', 'crb_service_price', 'Цена услуги')
-    //                             ->set_width(33),
-    //                     )),
-    //             ))
-    //     ));
+                    Field::make('complex', 'crb_price_services', 'Услуги раздела')
+                        ->add_fields('chapters_services', 'Добавить услугу', array(
+                            Field::make('text', 'crb_service_head', 'Название услуги')
+                                ->set_width(33),
+                            Field::make('rich_text', 'crb_service_desc', 'Описание услуги')
+                                ->set_width(33),
+                            Field::make('text', 'crb_service_price', 'Цена услуги')
+                                ->set_width(33),
+                        )),
+                ))
+        ));
 
     Container::make('post_meta', 'Контент страницы услуг')
         ->show_on_page('services')
@@ -310,7 +310,7 @@ function site_carbon()
                 ->add_fields('crb_services', 'Добавить услугу', array(
                     Field::make('text', 'crb_service_name', 'Название услуги')
                         ->set_width(33),
-                    Field::make('rich_text', 'crb_service_desc', 'Описание услуги')
+                    Field::make('rich_text', 'crb_service_text', 'Описание услуги')
                         ->set_width(33),
                     Field::make('text', 'crb_service_price', 'Цена услуги')
                         ->set_width(33),

@@ -27,9 +27,9 @@
                                     <h2 class="title"><?php echo esc_html($service['crb_service_name']); ?></h2>
                                 <?php endif; ?>
 
-                                <?php if (!empty($service['crb_service_desc'])) : ?>
+                                <?php if (!empty($service['crb_service_text'])) : ?>
                                     <div class="service-desc">
-                                        <?php echo apply_filters('the_content', $service['crb_service_desc']); ?>
+                                        <?php echo apply_filters('the_content', $service['crb_service_text']); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
