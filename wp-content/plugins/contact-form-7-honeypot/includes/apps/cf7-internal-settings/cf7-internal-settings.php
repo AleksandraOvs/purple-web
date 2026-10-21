@@ -26,8 +26,14 @@ if ( ! class_exists( 'CF7Apps_Internal_Settings_Apps' ) ) :
          * @since 3.2.0
          */
         private function __construct() {
-            if ( isset( $_GET['page'] ) && isset( $_GET['post'] ) ) {
-                if ( 'wpcf7' === $_GET['page'] ) {
+            if ( isset( $_GET['page'] ) ) {
+                // Run on existing form edit screen (page=wpcf7&post=ID)
+                if ( 'wpcf7' === $_GET['page'] && isset( $_GET['post'] ) ) {
+                    $this->run();
+                }
+
+                // Also run on "Add New" form screen (page=wpcf7-new, no post ID yet)
+                if ( 'wpcf7-new' === $_GET['page'] ) {
                     $this->run();
                 }
             }
@@ -49,21 +55,10 @@ if ( ! class_exists( 'CF7Apps_Internal_Settings_Apps' ) ) :
          * @param string $hook The current admin page hook.
          */
         public function admin_enqueue_scripts( $hook ) {
-            if ( 'toplevel_page_wpcf7' === $hook ) {
-                $form_id  = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
-                if ( 0 === $form_id ) {
-                    return;
-                }
-                $options                 = get_option( 'cf7apps_settings' );
-                $redirection_app_enabled = false;
+            if ( 'toplevel_page_wpcf7' === $hook  || 'contact_page_wpcf7-new' === $hook ) {
 
-                if ( ! empty( $options ) ) {
-                    if ( isset( $options['cf7-redirection'] ) ) {
-                        if ( isset( $options['cf7-redirection']['is_enabled'] ) && $options['cf7-redirection']['is_enabled'] ) {
-                            $redirection_app_enabled = true;
-                        }
-                    }
-                }
+                $form_id = isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0;
+                $internal_settings_enabled = cf7apps_has_enabled_internal_settings_app();
 
                 $dir_url  = CF7APPS_PLUGIN_DIR_URL . '/includes/apps/cf7-internal-settings/';
                 $dir_path = CF7APPS_PLUGIN_DIR . '/includes/apps/cf7-internal-settings/';
@@ -73,7 +68,7 @@ if ( ! class_exists( 'CF7Apps_Internal_Settings_Apps' ) ) :
                     'enqueue-wrapper',
                     'cf7appsWrapperObjects',
                     array(
-                        'cf7appsRedirectionEnabled' => $redirection_app_enabled,
+                        'cf7appsInternalSettingsEnabled' => $internal_settings_enabled,
                     )
                 );
 
@@ -105,6 +100,12 @@ if ( ! class_exists( 'CF7Apps_Internal_Settings_Apps' ) ) :
                         true
                     );
 
+                    wp_set_script_translations(
+                        'cf7apps-internal-settings-app',
+                        'cf7apps',
+                        CF7APPS_PLUGIN_DIR . '/languages'
+                    );
+
                     wp_localize_script(
                         'cf7apps-internal-settings-app',
                         'CF7AppsInternalSettings',
@@ -114,6 +115,15 @@ if ( ! class_exists( 'CF7Apps_Internal_Settings_Apps' ) ) :
                             'nonce'     => wp_create_nonce( 'wp_rest' ),
                             'formID'    => $form_id,
                             'appIndexURL' => admin_url( 'admin.php?page=cf7apps' ),
+                            'formEditorAssetsURL' => $dir_url . 'assets/images/form-editor/',
+                            'formPromoAssetsURL'  => $dir_url . 'assets/images/form-promo/',
+                            'postSmtpIconUrl'     => CF7APPS_PLUGIN_DIR_URL . '/assets/images/dashboard/recommended/post-smtp.gif',
+                            'pluginVersion' => CF7APPS_VERSION,
+                            'paymentGlobalCurrency' => array(
+                                'stripe' => cf7apps_get_global_payment_currency( 'stripe' ),
+                                'paypal' => cf7apps_get_global_payment_currency( 'paypal' ),
+                            ),
+                            'hasPro' => cf7apps_has_pro(),
                         )
                     );
                 }

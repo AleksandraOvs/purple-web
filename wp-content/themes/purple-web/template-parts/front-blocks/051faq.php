@@ -3,10 +3,10 @@
         <?php
         if ($faq_head = carbon_get_theme_option('crb_faq_head')) {
         ?>
-        <div class="section-heading">
-             <h2 class="title fromTop"><?php echo $faq_head ?></h2>
-        </div>
-           
+            <div class="section-heading">
+                <h2 class="title"><?php echo $faq_head ?></h2>
+            </div>
+
         <?php
         }
         ?>
@@ -21,7 +21,7 @@
                         foreach ($faq_items as $faq_item) {
                             $i++;
                         ?>
-                            <div class="faq-item fromOpacity">
+                            <div class="faq-item">
                                 <div class="faq-question-head" class="">
                                     <h4><span class="num-of-question"><?php echo '0' . $i; ?></span><?php echo $faq_item['crb_question'] ?></h4>
                                     <div class="arrow">

@@ -1,5 +1,4 @@
 <?php
-
 $associated_posts = carbon_get_theme_option('crb_association_works');
 
 // Преобразуем в массив ID, если это массив объектов
@@ -54,7 +53,7 @@ if ($query->have_posts()) :
         </article>
 <?php
     endwhile;
-    nums_pagination(); 
+    nums_pagination();
     wp_reset_postdata();
 else :
     echo 'Портфолио не найдено.';

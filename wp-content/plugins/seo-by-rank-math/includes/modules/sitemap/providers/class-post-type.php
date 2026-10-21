@@ -239,13 +239,39 @@ class Post_Type implements Provider {
 	}
 
 	/**
+	 * Update the query to exclude canonical posts.
+	 *
+	 * @param string $join_filter  The join filter.
+	 * @param string $where_filter The where filter.
+	 * @param array  $post_types   The post types.
+	 *
+	 * @return void
+	 */
+	private function maybe_update_query_to_exclude_posts_with_canonical_urls( &$join_filter, &$where_filter, $post_types ) {
+		/**
+		 * Allows to decide if canonical urls should be excluded from the sitemap.
+		 *
+		 * @param bool $exlude_posts_with_canonical_urls
+		 * @param array|string $post_types The post types.
+		 */
+		$exlude_posts_with_canonical_urls = $this->do_filter( 'sitemap/exlude_posts_with_canonical_urls', false, $post_types );
+		if ( ! $exlude_posts_with_canonical_urls ) {
+			return;
+		}
+
+		global $wpdb;
+		$join_filter  .= " LEFT JOIN {$wpdb->postmeta} AS pm_canonical ON ( p.ID = pm_canonical.post_id AND pm_canonical.meta_key = 'rank_math_canonical_url' )";
+		$where_filter .= ' AND pm_canonical.meta_value IS NULL';
+	}
+
+	/**
 	 * Get count of posts for post type.
 	 *
 	 * @param string $post_types Post types to retrieve count for.
 	 *
 	 * @return int
 	 */
-	protected function get_post_type_count( $post_types ) {
+	public function get_post_type_count( $post_types ) {
 		global $wpdb;
 
 		$posts_to_exclude = 'page' === $post_types ? $this->get_blog_page_id() : '';
@@ -266,6 +292,8 @@ class Post_Type implements Provider {
 		 * @param array  $post_types Post types.
 		 */
 		$where_filter = $this->do_filter( 'sitemap/post_count/where', '', $post_types );
+
+		$this->maybe_update_query_to_exclude_posts_with_canonical_urls( $join_filter, $where_filter, $post_types );
 
 		$sql = "SELECT COUNT( DISTINCT p.ID ) as count FROM {$wpdb->posts} as p
 		{$join_filter}
@@ -301,7 +329,11 @@ class Post_Type implements Provider {
 			];
 		} elseif ( $this->get_page_on_front_id() && 'post' === $post_type && $this->get_page_for_posts_id() ) {
 			$needs_archive = false;
-			$links[]       = Sitemap::is_object_indexable( $this->get_page_for_posts_id() ) ? [ 'loc' => get_permalink( $this->get_page_for_posts_id() ) ] : '';
+			$post_id       = $this->get_page_for_posts_id();
+
+			if ( Sitemap::is_object_indexable( $post_id ) ) {
+				$links[] = $this->get_single_post_row_data( get_post( $post_id ) );
+			}
 		}
 
 		if ( ! $needs_archive ) {
@@ -375,6 +407,8 @@ class Post_Type implements Provider {
 		 */
 		$where_filter = $this->do_filter( 'sitemap/get_posts/where', '', $post_types );
 
+		$this->maybe_update_query_to_exclude_posts_with_canonical_urls( $join_filter, $where_filter, [ $post_types ] );
+
 		$sql = "
 			SELECT l.ID, post_title, post_content, post_name, post_parent, post_author, post_modified_gmt, post_date, post_date_gmt, post_type
 			FROM (
@@ -444,8 +478,6 @@ class Post_Type implements Provider {
 	 * @return array|boolean
 	 */
 	protected function get_url( $post ) {
-		$url = [];
-
 		/**
 		 * Filter the post object before it gets added to the sitemap.
 		 * This allows you to add custom properties to the post object, or replace it entirely.
@@ -458,6 +490,17 @@ class Post_Type implements Provider {
 			return false;
 		}
 
+		return $this->get_single_post_row_data( $post );
+	}
+
+	/**
+	 * Get the url parts for a single post.
+	 *
+	 * @param object $post Post object.
+	 *
+	 * @return array|false
+	 */
+	private function get_single_post_row_data( $post ) {
 		/**
 		 * Filter the URL Rank Math SEO uses in the XML sitemap.
 		 *
@@ -466,7 +509,7 @@ class Post_Type implements Provider {
 		 * @param string $url  URL to use in the XML sitemap
 		 * @param object $post Post object for the URL.
 		 */
-		$url['loc'] = $this->do_filter( 'sitemap/xml_post_url', get_permalink( $post ), $post );
+		$url = [ 'loc' => $this->do_filter( 'sitemap/xml_post_url', get_permalink( $post ), $post ) ];
 
 		/**
 		 * Do not include external URLs.
@@ -476,13 +519,8 @@ class Post_Type implements Provider {
 		if ( 'external' === $this->get_classifier()->classify( $url['loc'] ) ) {
 			return false;
 		}
-
-		$modified = max( $post->post_modified_gmt, $post->post_date_gmt );
-		if ( '0000-00-00 00:00:00' !== $modified ) {
-			$url['mod'] = $modified;
-		}
-
 		$canonical = Helper::get_post_meta( 'canonical_url', $post->ID );
+
 		if ( '' !== $canonical && $canonical !== $url['loc'] ) {
 			/*
 			 * Let's assume that if a canonical is set for this page and it's different from
@@ -490,6 +528,11 @@ class Post_Type implements Provider {
 			 * an external site, either way, we shouldn't include it here.
 			 */
 			return false;
+		}
+
+		$modified = max( $post->post_modified_gmt, $post->post_date_gmt );
+		if ( '0000-00-00 00:00:00' !== $modified ) {
+			$url['mod'] = $modified;
 		}
 
 		$url['images'] = ! is_null( $this->get_image_parser() ) ? $this->get_image_parser()->get_images( $post ) : [];

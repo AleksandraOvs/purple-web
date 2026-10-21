@@ -74,16 +74,16 @@ function purple_web_setup()
 	);
 
 	// Set up the WordPress core custom background feature.
-	add_theme_support(
-		'custom-background',
-		apply_filters(
-			'purple_web_custom_background_args',
-			array(
-				'default-color' => 'ffffff',
-				'default-image' => '',
-			)
-		)
-	);
+	// add_theme_support(
+	// 	'custom-background',
+	// 	apply_filters(
+	// 		'purple_web_custom_background_args',
+	// 		array(
+	// 			'default-color' => 'ffffff',
+	// 			'default-image' => '',
+	// 		)
+	// 	)
+	// );
 
 	// Add theme support for selective refresh for widgets.
 	add_theme_support('customize-selective-refresh-widgets');
@@ -157,26 +157,25 @@ add_action('widgets_init', 'purple_web_widgets_init');
 function purple_web_scripts()
 {
 	wp_enqueue_style('purple-web-style', get_stylesheet_uri(), array(), _S_VERSION);
-	wp_enqueue_style('purple-web-fonts', get_stylesheet_directory_uri() . '/assets/fonts.css', array(), null);
-	wp_enqueue_style('purple-palette', get_stylesheet_directory_uri() . '/assets/color-palette.css', array(), null);
-	wp_enqueue_style('purple-web-styles', get_stylesheet_directory_uri() . '/assets/styles.css', array(), null);
-	wp_enqueue_style('swiper-css', get_stylesheet_directory_uri() . '/inc/swiper/swiper-bundle.min.css', array(), null);
-	wp_enqueue_style('floatbut-css', get_stylesheet_directory_uri() . '/assets/float-button.css', array(), null);
-	wp_enqueue_style('fancy-styles', get_stylesheet_directory_uri() . '/inc/fancybox/jquery.fancybox.min.css', array(), null);
+	wp_enqueue_style('normalize-styles', get_stylesheet_directory_uri() . '/assets/css/normalize.css', array(), null);
+	wp_enqueue_style('animations-styles', get_stylesheet_directory_uri() . '/assets/css/animations.css', array(), null);
+	wp_enqueue_style('purple-web-styles', get_stylesheet_directory_uri() . '/assets/css/styles.css', array(), null);
+	wp_enqueue_style('main-styles', get_stylesheet_directory_uri() . '/assets/css/main-styles.css', array(), null);
+	wp_enqueue_style('floatbut-css', get_stylesheet_directory_uri() . '/assets/css/float-button.css', array(), null);
+	wp_enqueue_style('services-css', get_stylesheet_directory_uri() . '/assets/css/services.css', array(), null);
 	wp_style_add_data('purple-web-style', 'rtl', 'replace');
 
 	wp_deregister_script('jquery');
-	wp_enqueue_script('jquery_scripts', get_template_directory_uri() . '/js/jquery-3.7.1.min.js', array(), _S_VERSION, true);
+	wp_enqueue_script('jquery_scripts', get_template_directory_uri() . '/assets/js/jquery-3.7.1.min.js', array(), _S_VERSION, true);
 	wp_enqueue_script('js-accordion-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array(), null, true);
-	wp_enqueue_script('purple-web-navigation', get_stylesheet_directory_uri() . '/js/navigation.js', array(), null, true);
-	wp_enqueue_script('fancy-scripts', get_stylesheet_directory_uri() . '/inc/fancybox/jquery.fancybox.min.js', array(), null, true);
-	wp_enqueue_script('swiper-js', get_stylesheet_directory_uri() . '/inc/swiper/swiper-bundle.min.js', array(), null, true);
-	wp_enqueue_script('swiper-scripts', get_stylesheet_directory_uri() . '/inc/swiper/slider-scripts.js', array(), null, true);
-	wp_enqueue_script('js-accordion', get_template_directory_uri() . '/js/accordion.js', array(), null, true);
+	wp_enqueue_script('purple-web-navigation', get_stylesheet_directory_uri() . '/assets/js/navigation.js', array(), null, true);
+	wp_enqueue_script('animations', get_stylesheet_directory_uri() . '/assets/js/animations.js', array(), null, true);
+	wp_enqueue_script('js-accordion', get_template_directory_uri() . '/assets/js/accordion.js', array(), null, true);
 
-	wp_enqueue_script('purple-web-scripts', get_stylesheet_directory_uri() . '/js/scripts.js', array(), null, true);
+	wp_enqueue_script('purple-web-scripts', get_stylesheet_directory_uri() . '/assets/js/scripts.js', array(), null, true);
+	wp_enqueue_script('cf-scripts', get_stylesheet_directory_uri() . '/assets/js/contact-forms.js', array(), null, true);
 	wp_enqueue_script('imask-scripts', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js', array(), null, true);
-	wp_enqueue_script('ajax-scripts', get_stylesheet_directory_uri() . '/js/seo-load.js', array(), null, true);
+	wp_enqueue_script('ajax-scripts', get_stylesheet_directory_uri() . '/assets/js/seo-load.js', array(), null, true);
 
 	wp_localize_script(
 		'ajax-scripts',
@@ -202,20 +201,6 @@ function gut_styles()
 	add_editor_style('assets/admin-styles.css');
 }
 
-// function add_async_attribute($tag, $handle) {
-// 	// добавьте дескрипторы (названия) скриптов в массив ниже
-// 	$scripts_to_async = array('spikmi-script');
-
-// 	foreach($scripts_to_async as $async_script) {
-// 	   if ($async_script === $handle) {
-// 		  return str_replace(' src', ' async src', $tag);
-// 	   }
-// 	}
-// 	return $tag;
-//  }
-
-//  add_filter('script_loader_tag', 'add_async_attribute', 10, 2);
-
 /**
  * Implement the Custom Header feature.
  */
@@ -230,11 +215,6 @@ require get_template_directory() . '/inc/template-tags.php';
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
-
-/***
- * Carbon fields
- */
-require 'inc/carbon-fields.php';
 
 require 'inc/current-temp.php';
 
@@ -251,13 +231,6 @@ require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/post-types.php';
 
 /**
- * Custom post colors
- */
-require get_template_directory() . '/inc/mypalette.php';
-
-require get_template_directory() . '/inc/ajax-content.php';
-
-/**
  * Load Jetpack compatibility file.
  */
 if (defined('JETPACK__VERSION')) {
@@ -268,74 +241,6 @@ if (defined('JETPACK__VERSION')) {
 add_filter('get_the_archive_title', function ($title) {
 	return preg_replace('~^[^:]+: ~', '', $title);
 });
-
-
-// создаем новую колонку
-// add_filter('manage_' . 'page' . '_posts_columns', 'add_views_column', 4);
-// function add_views_column($columns)
-// {
-// 	$num = 2; // после какой по счету колонки вставлять новые
-
-// 	$new_columns = [
-// 		'views' => 'Шаблон',
-// 	];
-
-// 	return array_slice($columns, 0, $num) + $new_columns + array_slice($columns, $num);
-// }
-
-// заполняем колонку данными
-// wp-admin/includes/class-wp-posts-list-table.php
-// add_action('manage_' . 'page' . '_posts_custom_column', 'fill_views_column', 5, 2);
-// function fill_views_column($colname, $post_id)
-// {
-// 	if ($colname === 'views') {
-
-// 		//echo $post_id;
-// 		//echo 'ok';
-// 		$template = get_post_meta($post_id, '_wp_page_template', true);
-// 		echo $template;
-
-// 		// if ($template && $template !== 'default') {
-// 		// 	echo 'Шаблон страницы: ' . $template;
-// 		// } 
-// 	}
-// }
-
-
-// Добавляем новую колонку "Шаблон" в таблицу страниц
-add_filter('manage_page_posts_columns', 'add_template_name_column', 4);
-function add_template_name_column($columns)
-{
-	$num = 2; // позиция для вставки
-
-	$new_columns = [
-		'template_name' => 'Шаблон',
-	];
-
-	return array_slice($columns, 0, $num) + $new_columns + array_slice($columns, $num);
-}
-
-// Заполняем колонку названием шаблона
-add_action('manage_page_posts_custom_column', 'fill_template_name_column', 5, 2);
-function fill_template_name_column($colname, $post_id)
-{
-	if ($colname === 'template_name') {
-		$template = get_post_meta($post_id, '_wp_page_template', true);
-
-		if ($template === 'default') {
-			echo 'По умолчанию';
-			return;
-		}
-
-		// Получаем все зарегистрированные шаблоны для страниц
-		$templates = wp_get_theme()->get_page_templates();
-
-		// Ищем читаемое название по имени файла
-		$name = array_search($template, $templates);
-
-		echo $name ? esc_html($name) : esc_html($template);
-	}
-}
 
 // Contact Form 7 remove auto added p tags
 add_filter('wpcf7_autop_or_not', '__return_false');
@@ -371,3 +276,41 @@ function nums_pagination()
 
 	echo '</nav>';
 }
+
+/**
+ * Подключение стилей паттернов на сайте и в редакторе Gutenberg.
+ */
+function purple_web_enqueue_patterns_styles()
+{
+	$relative_path = '/assets/css/patterns.css';
+	$file_path     = get_theme_file_path($relative_path);
+
+	if (! file_exists($file_path)) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'purple-web-patterns-style',
+		get_theme_file_uri($relative_path),
+		array(),
+		filemtime($file_path)
+	);
+}
+add_action('wp_enqueue_scripts', 'purple_web_enqueue_patterns_styles');
+add_action('enqueue_block_editor_assets', 'purple_web_enqueue_patterns_styles');
+
+//разрешить загрузку свг только админам
+function allow_svg_upload_for_admins($mimes)
+{
+	if (current_user_can('administrator')) {
+		$mimes['svg'] = 'image/svg+xml';
+	}
+	return $mimes;
+}
+add_filter('upload_mimes', 'allow_svg_upload_for_admins');
+
+add_action('after_setup_theme', function () {
+	add_theme_support('editor-styles');
+
+	add_editor_style('assets/css/patterns.css');
+});

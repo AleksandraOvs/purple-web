@@ -15,18 +15,17 @@
     ?>
     <?php get_template_part('template-parts/template-blocks/04service-parts')
     ?>
+
+    <div class="page-content">
+        <?php the_content() ?>
+    </div>
+    <?php get_template_part('template-parts/template-blocks/05page-faq')
+    ?>
     <?php //get_template_part('template-parts/template-blocks/04page-form') 
     ?>
-    <?php //get_template_part('template-parts/template-blocks/05page-faq') 
-    ?>
+
     <?php //get_template_part('template-parts/portfolio-list')
     ?>
-
-    <div id="seo-lazy-content" data-page-id="<?php echo get_the_ID(); ?>">
-        <div class="seo-loader">
-            Загрузка...
-        </div>
-    </div>
 
 </main>
 <?php get_footer() ?>

@@ -146,7 +146,10 @@ class JsonLD {
 		 * @param array  $unsigned An array of data to output in JSON-LD.
 		 * @param JsonLD $unsigned JsonLD instance.
 		 */
-		$data = $this->do_filter( 'json_ld', [], $this );
+		$data = array_filter( $this->do_filter( 'json_ld', [], $this ) );
+		if ( empty( $data ) ) {
+			return;
+		}
 		$data = $this->do_filter( 'schema/validated_data', $this->validate_schema( $data ) );
 		if ( is_array( $data ) && ! empty( $data ) ) {
 
@@ -347,7 +350,7 @@ class JsonLD {
 			 */
 			$pre = $this->do_filter( $hook, false, $jsonld->parts, $data );
 			if ( false !== $pre ) {
-				$new_schemas[ $key ] = $this->do_filter( $hook . '_entity', $pre );
+				$new_schemas[ $key ] = $this->do_filter( $hook . '_custom_entity', [] );
 				$new_schemas[ $key ] = $this->do_filter( 'snippet/rich_snippet_entity', $new_schemas[ $key ] );
 				continue;
 			}
@@ -368,8 +371,9 @@ class JsonLD {
 	 */
 	public function can_add_global_entities( $data = [], $is_product_archive = false ) {
 		if ( ! $is_product_archive && ( is_category() || is_tag() || is_tax() ) ) {
-			$object = get_queried_object();
-			return $object && ! Helper::get_settings( 'titles.remove_' . $object->taxonomy . '_snippet_data' ) && ! $this->do_filter( 'snippet/remove_taxonomy_data', false, $object->taxonomy );
+			$object              = get_queried_object();
+			$add_global_entities = $object && ! Helper::get_settings( 'titles.remove_' . $object->taxonomy . '_snippet_data' ) && ! $this->do_filter( 'snippet/remove_taxonomy_data', false, $object->taxonomy );
+			return $this->do_filter( 'schema/add_global_entities', $add_global_entities, $this );
 		}
 
 		if ( is_front_page() || ! is_singular() || ! Helper::can_use_default_schema( $this->post_id ) || ! empty( $data ) ) {
@@ -706,6 +710,10 @@ class JsonLD {
 			return $description;
 		}
 
+		if ( post_password_required( $product->get_id() ) ) {
+			return '';
+		}
+
 		$product_object = get_post( $product->get_id() );
 		$description    = Paper::get_from_options( 'pt_product_description', $product_object, '%excerpt%' );
 
@@ -784,9 +792,9 @@ class JsonLD {
 			$profiles[] = "https://twitter.com/$twitter";
 		}
 
-		$addional_profiles = Helper::get_settings( 'titles.social_additional_profiles' );
-		if ( ! empty( $addional_profiles ) ) {
-			$profiles = array_merge( $profiles, Arr::from_string( $addional_profiles, "\n" ) );
+		$additional_profiles = Helper::get_settings( 'titles.social_additional_profiles' );
+		if ( ! empty( $additional_profiles ) ) {
+			$profiles = array_merge( $profiles, Arr::from_string( $additional_profiles, "\n" ) );
 		}
 
 		return array_values( array_filter( $profiles ) );

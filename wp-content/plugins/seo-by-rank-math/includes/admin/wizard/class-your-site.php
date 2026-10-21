@@ -31,7 +31,7 @@ class Your_Site implements Wizard_Step {
 			'businessTypesChoices'   => Helper::choices_business_types(),
 			'business_type'          => Helper::get_settings( 'titles.local_business_type' ),
 			'website_name'           => Helper::get_settings( 'titles.website_name', $displayname ),
-			'website_alternate_name' => Helper::get_settings( 'titles.website_alternate_name' ),
+			'website_alternate_name' => Helper::get_settings( 'titles.website_alternate_name', '' ),
 			'company_name'           => Helper::get_settings( 'titles.knowledgegraph_name', $displayname ),
 			'open_graph_image'       => Helper::get_settings( 'titles.open_graph_image' ),
 		];
@@ -247,7 +247,7 @@ class Your_Site implements Wizard_Step {
 	}
 
 	/**
-	 * Get type dependecy.
+	 * Get type dependency.
 	 *
 	 * @return array
 	 */
@@ -267,13 +267,13 @@ class Your_Site implements Wizard_Step {
 	 */
 	private function get_type_choices() {
 		return [
-			'blog'          => esc_html__( 'Personal Blog', 'rank-math' ),
-			'news'          => esc_html__( 'Community Blog/News Site', 'rank-math' ),
-			'portfolio'     => esc_html__( 'Personal Portfolio', 'rank-math' ),
-			'business'      => esc_html__( 'Small Business Site', 'rank-math' ),
-			'webshop'       => esc_html__( 'Webshop', 'rank-math' ),
-			'otherpersonal' => esc_html__( 'Other Personal Website', 'rank-math' ),
-			'otherbusiness' => esc_html__( 'Other Business Website', 'rank-math' ),
+			'blog'          => esc_html__( 'Personal Blog', 'seo-by-rank-math' ),
+			'news'          => esc_html__( 'Community Blog/News Site', 'seo-by-rank-math' ),
+			'portfolio'     => esc_html__( 'Personal Portfolio', 'seo-by-rank-math' ),
+			'business'      => esc_html__( 'Small Business Site', 'seo-by-rank-math' ),
+			'webshop'       => esc_html__( 'Webshop', 'seo-by-rank-math' ),
+			'otherpersonal' => esc_html__( 'Other Personal Website', 'seo-by-rank-math' ),
+			'otherbusiness' => esc_html__( 'Other Business Website', 'seo-by-rank-math' ),
 		];
 	}
 }

@@ -130,6 +130,10 @@ class DB {
 			return [];
 		}
 
+		if ( ! DB_Helper::check_table_exists( 'rank_math_analytics_gsc' ) ) {
+			return [];
+		}
+
 		$key  = 'rank_math_analytics_data_info';
 		$data = get_transient( $key );
 		if ( false !== $data ) {
@@ -323,11 +327,19 @@ class DB {
 			unset( $args['id'] );
 
 			$updated = self::objects()->set( $args )
-				->where( 'id', $old_id )
-				->where( 'object_id', absint( $args['object_id'] ) )
-				->update();
+			->where( 'id', $old_id )
+			->where( 'object_id', absint( $args['object_id'] ) )
+			->update();
 
 			if ( ! empty( $updated ) ) {
+				return $old_id;
+			}
+			$old_id = self::objects()
+			->select( 'id' )
+			->where( 'object_id', absint( $args['object_id'] ) )
+			->getVar();
+			if ( ! empty( $old_id ) ) {
+				// $updated may sometimes return 0 if there is no field that is changed, even if a row with $args['object_id'] exists.
 				return $old_id;
 			}
 		}
@@ -427,23 +439,28 @@ class DB {
 			return '';
 		}
 
-		$url  = urldecode( preg_replace( '/#.*$/', '', $url ) );
-		$host = wp_parse_url( $url, PHP_URL_HOST );
-		if ( ! $host ) {
-			return '';
-		}
+		$host = Helper::get_home_url();
+		$url  = str_replace( $host, '', $url );
+
+		$url = urldecode( preg_replace( '/#.*$/', '', $url ) );
 
 		$url = self::remove_hash( $url );
 
-		$url = str_replace( Helper::get_home_url(), '', $url );
+		// Parse the URL to get the path component.
+		$parsed_url = wp_parse_url( $url );
+		if ( isset( $parsed_url['path'] ) ) {
+			$page = $parsed_url['path'];
+		} else {
+			// Remove ASCII domain. idn_to_ascii() needs ext-intl, which isn't
+			// guaranteed to be installed on every host — fall back to the
+			// unconverted host rather than fatal-erroring when it's missing.
+			$host_ascii = function_exists( 'idn_to_ascii' ) ? idn_to_ascii( $host ) : $host;
+			$url        = str_replace( $host_ascii, '', $url );
 
-		// Remove ASCII domain.
-		$host_ascii = idn_to_ascii( $host );
-		$url        = str_replace( $host_ascii, '', $url );
+			$page = preg_replace( '#^https?://(www\.)?#i', '', $url );
+		}
 
-		$url = preg_replace( '#^https?://(www\.)?#i', '', $url );
-
-		return $url;
+		return apply_filters( 'rank_math/analytics/get_page', $page );
 	}
 
 	/**

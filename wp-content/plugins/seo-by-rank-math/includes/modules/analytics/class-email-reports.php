@@ -126,18 +126,18 @@ class Email_Reports {
 		$date  = $this->get_date();
 
 		// Translators: placeholder is "rankmath.com" as a link.
-		$footer_text  = sprintf( esc_html__( 'This email was sent to you as a registered member of %s.', 'rank-math' ), '<a href="###SITE_URL###">###SITE_URL_SIMPLE###</a>' );
+		$footer_text  = sprintf( esc_html__( 'This email was sent to you as a registered member of %s.', 'seo-by-rank-math' ), '<a href="###SITE_URL###">###SITE_URL_SIMPLE###</a>' );
 		$footer_text .= ' ';
 
 		// Translators: placeholder is "click here" as a link.
-		$footer_text .= sprintf( esc_html__( 'To update your email preferences, %s.', 'rank-math' ), '<a href="###SETTINGS_URL###">' . esc_html__( 'click here', 'rank-math' ) . '</a>' );
+		$footer_text .= sprintf( esc_html__( 'To update your email preferences, %s.', 'seo-by-rank-math' ), '<a href="###SETTINGS_URL###">' . esc_html__( 'click here', 'seo-by-rank-math' ) . '</a>' );
 
 		$footer_text .= '###ADDRESS###';
 
 		$this->variables = [
 			'site_url'                    => get_home_url(),
 			'site_url_simple'             => explode( '://', get_home_url() )[1],
-			'settings_url'                => Helper::get_admin_url( 'options-general#setting-panel-analytics' ),
+			'settings_url'                => Helper::get_settings_url( 'general', 'analytics' ),
 			'report_url'                  => Helper::get_admin_url( 'analytics' ),
 			'assets_url'                  => $this->assets_url,
 			'address'                     => '<br/> [rank_math_contact_info show="address"]',
@@ -285,7 +285,7 @@ class Email_Reports {
 			'to'      => $account['email'],
 			'subject' => sprintf(
 				// Translators: placeholder is the site URL.
-				__( 'Rank Math [SEO Report] - %s', 'rank-math' ),
+				__( 'Rank Math [SEO Report] - %s', 'seo-by-rank-math' ),
 				explode( '://', get_home_url() )[1]
 			),
 			'message' => $this->get_template( 'report' ),

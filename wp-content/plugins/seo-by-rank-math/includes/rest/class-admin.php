@@ -111,11 +111,11 @@ class Admin extends WP_REST_Controller {
 
 		register_rest_route(
 			$this->namespace,
-			'/resetSettings',
+			'/searchPage',
 			[
-				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => [ $this, 'reset_settings' ],
-				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_settings' ],
+				'methods'             => WP_REST_Server::ALLMETHODS,
+				'callback'            => [ $this, 'search_page' ],
+				'permission_callback' => [ '\\RankMath\\Rest\\Rest_Helper', 'can_manage_options' ],
 			]
 		);
 	}
@@ -155,7 +155,7 @@ class Admin extends WP_REST_Controller {
 	 */
 	public function tools_actions( WP_REST_Request $request ) {
 		$action = $request->get_param( 'action' );
-		return apply_filters( 'rank_math/tools/' . $action, 'Something went wrong.' );
+		return apply_filters( 'rank_math/tools/' . $action, 'Something went wrong.', $request );
 	}
 
 	/**
@@ -239,10 +239,13 @@ class Admin extends WP_REST_Controller {
 	public function update_settings( WP_REST_Request $request ) {
 		$settings = $request->get_param( 'settings' );
 		$type     = $request->get_param( 'type' );
+		$is_reset = $request->get_param( 'isReset' );
 
 		if ( $type === 'roleCapabilities' ) {
-			Helper::set_capabilities( $settings );
-			return true;
+			$is_reset ? Capability_Manager::get()->reset_capabilities() : Helper::set_capabilities( $settings );
+			return [
+				'settings' => Helper::get_roles_capabilities(),
+			];
 		}
 
 		if ( $type === 'redirections' ) {
@@ -260,49 +263,92 @@ class Admin extends WP_REST_Controller {
 					$redirection->set_status( 'inactive' );
 					return rest_ensure_response(
 						[
-							'error' => __( 'The redirection you are trying to create may cause an infinite loop. Please check the source and destination URLs. The redirection has been deactivated.', 'rank-math' ),
+							'error' => __( 'The redirection you are trying to create may cause an infinite loop. Please check the source and destination URLs. The redirection has been deactivated.', 'seo-by-rank-math' ),
 						]
 					);
 				}
 
 				return rest_ensure_response(
 					[
-						'error' => __( 'The redirection you are trying to update may cause an infinite loop. Please check the source and destination URLs.', 'rank-math' ),
+						'error' => __( 'The redirection you are trying to update may cause an infinite loop. Please check the source and destination URLs.', 'seo-by-rank-math' ),
 					]
 				);
 
 			}
 
 			if ( false === $redirection->save() ) {
-				return __( 'Please add at least one valid source URL.', 'rank-math' );
+				return __( 'Please add at least one valid source URL.', 'seo-by-rank-math' );
 			}
 
 			$this->do_action( 'redirection/saved', $redirection, $settings );
 			return true;
 		}
 
-		Helper::update_all_settings( ...$settings );
-		rank_math()->settings->reset();
+		if ( $type === 'instant-indexing' ) {
+			$key          = 'rank-math-options-instant-indexing';
+			$org_settings = get_option( $key );
+			if ( $is_reset ) {
+				if ( isset( $org_settings['bing_post_types'] ) ) {
+					unset( $org_settings['bing_post_types'] );
+				}
+			}
 
-		return true;
+			$org_settings['bing_post_types'] = isset( $settings['bing_post_types'] ) ? array_map( 'sanitize_text_field', $settings['bing_post_types'] ) : [];
+
+			update_option( $key, $org_settings, false );
+			return [
+				'settings' => $org_settings,
+			];
+		}
+
+		if ( ! in_array( $type, [ 'general', 'titles', 'sitemap' ], true ) ) {
+			return __( 'Invalid type.', 'seo-by-rank-math' );
+		}
+
+		return \RankMath\Admin\Option_Center::save_settings(
+			$type,
+			$settings,
+			$request->get_param( 'fieldTypes' ),
+			$request->get_param( 'updated' ),
+			$is_reset
+		);
 	}
 
 	/**
-	 * Reset settings.
+	 * Update Settings.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function reset_settings( WP_REST_Request $request ) {
-		$type = $request->get_param( 'type' );
-		if ( $type === 'roleCapabilities' ) {
-			Capability_Manager::get()->reset_capabilities();
-			return true;
+	public function search_page( WP_REST_Request $request ) {
+		$term = sanitize_text_field( $request->get_param( 'searchedTerm' ) );
+
+		if ( empty( $term ) ) {
+			return rest_ensure_response( [ 'results' => [] ] );
 		}
 
-		delete_option( "rank-math-options-$type" );
-		return true;
+		global $wpdb;
+		$pages = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT ID, post_title FROM {$wpdb->prefix}posts WHERE post_type = 'page' AND post_status = 'publish' AND post_title LIKE %s",
+				'%' . $wpdb->esc_like( $term ) . '%'
+			),
+			ARRAY_A
+		);
+
+		$data = array_map(
+			function ( $page ) {
+				return [
+					'id'   => (int) $page['ID'],
+					'text' => $page['post_title'],
+					'url'  => get_permalink( $page['ID'] ),
+				];
+			},
+			$pages
+		);
+
+		return rest_ensure_response( [ 'results' => $data ] );
 	}
 
 	/**
@@ -315,12 +361,12 @@ class Admin extends WP_REST_Controller {
 			'module' => [
 				'type'              => 'string',
 				'required'          => true,
-				'description'       => esc_html__( 'Module slug', 'rank-math' ),
+				'description'       => esc_html__( 'Module slug', 'seo-by-rank-math' ),
 				'sanitize_callback' => 'rest_sanitize_request_arg',
 				'validate_callback' => function ( $param, $request, $key ) {
 					$modules = array_keys( rank_math()->manager->modules );
 					if ( ! in_array( $param, $modules, true ) ) {
-						return new WP_Error( 'invalid_module', esc_html__( 'Invalid module', 'rank-math' ), [ 'status' => 400 ] );
+						return new WP_Error( 'invalid_module', esc_html__( 'Invalid module', 'seo-by-rank-math' ), [ 'status' => 400 ] );
 					}
 
 					return rest_validate_request_arg( $param, $request, $key );
@@ -329,7 +375,7 @@ class Admin extends WP_REST_Controller {
 			'state'  => [
 				'type'              => 'string',
 				'required'          => true,
-				'description'       => esc_html__( 'Module state either on or off', 'rank-math' ),
+				'description'       => esc_html__( 'Module state either on or off', 'seo-by-rank-math' ),
 				'enum'              => [ 'on', 'off' ],
 				'sanitize_callback' => 'rest_sanitize_request_arg',
 				'validate_callback' => 'rest_validate_request_arg',
@@ -347,7 +393,7 @@ class Admin extends WP_REST_Controller {
 			'postScores' => [
 				'type'              => 'object',
 				'required'          => true,
-				'description'       => esc_html__( 'Post scores', 'rank-math' ),
+				'description'       => esc_html__( 'Post scores', 'seo-by-rank-math' ),
 				'sanitize_callback' => 'rest_sanitize_request_arg',
 				'validate_callback' => 'rest_validate_request_arg',
 			],
@@ -364,7 +410,7 @@ class Admin extends WP_REST_Controller {
 			'action' => [
 				'type'              => 'string',
 				'required'          => true,
-				'description'       => esc_html__( 'Action to perform', 'rank-math' ),
+				'description'       => esc_html__( 'Action to perform', 'seo-by-rank-math' ),
 				'sanitize_callback' => 'rest_sanitize_request_arg',
 				'validate_callback' => 'rest_validate_request_arg',
 			],
@@ -381,7 +427,7 @@ class Admin extends WP_REST_Controller {
 			'mode' => [
 				'type'              => 'string',
 				'required'          => true,
-				'description'       => esc_html__( 'Mode to set', 'rank-math' ),
+				'description'       => esc_html__( 'Mode to set', 'seo-by-rank-math' ),
 				'enum'              => [ 'easy', 'advanced', 'custom' ],
 				'sanitize_callback' => 'rest_sanitize_request_arg',
 				'validate_callback' => 'rest_validate_request_arg',
@@ -397,7 +443,7 @@ class Admin extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function maybe_delete_rewrite_rules( $module ) {
-		if ( 'sitemap' === $module ) {
+		if ( in_array( $module, [ 'sitemap', 'llms-txt' ], true ) ) {
 			delete_option( 'rewrite_rules' );
 		}
 	}

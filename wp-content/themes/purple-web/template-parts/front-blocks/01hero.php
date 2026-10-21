@@ -10,32 +10,32 @@ $hero_link_text = carbon_get_post_meta(get_the_ID(), 'crb_hero_link_text');
         <div class="section-hero__inner">
             <div class="section-hero__inner__content">
                 <?php
-                if (!empty($hero_head )) {
-                    echo '<h1 class="title hero-heading element-toright">' . $hero_head . '</h1>';
+                if (!empty($hero_head)) {
+                    echo '<h1 class="title hero-heading" data-scroll-animation="fade-up">' . $hero_head . '</h1>';
                 }
                 if (!empty($hero_desc)) {
-                     echo '<div class="hero-description element-toleft">' . $hero_desc . '</div>';
-                 }
+                    echo '<div class="hero-description" data-scroll-animation="fade-down">' . $hero_desc . '</div>';
+                }
                 if (!empty($hero_link)) {
-                    ?>
+                ?>
                     <a class="btn cta" href="<?php echo $hero_link ?>">
                         <?php
-                            if (!empty($hero_link_text)) {
-                                echo $hero_link_text;
-                            }else {
-                                echo 'Перейти';
-                            }
+                        if (!empty($hero_link_text)) {
+                            echo $hero_link_text;
+                        } else {
+                            echo 'Перейти';
+                        }
                         ?>
 
                     </a>
-                    <?php
+                <?php
                 }
                 ?>
             </div>
             <?php
             if ($hero_slides = carbon_get_post_meta(get_the_ID(), 'hero_slider_slides')) {
             ?>
-                <div class="swiper hero-slider element-toopacity">
+                <div class="swiper hero-slider" data-scroll-animation="fade">
                     <div class="swiper-wrapper hero-slider__wrapper">
                         <?php
                         foreach ($hero_slides as $hero_slide) {
@@ -58,7 +58,7 @@ $hero_link_text = carbon_get_post_meta(get_the_ID(), 'crb_hero_link_text');
                     <!-- If we need navigation buttons -->
                     <!-- <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div> -->
-                    
+
                 </div>
 
             <?php

@@ -47,8 +47,6 @@ if ($wp_slides = carbon_get_theme_option('crb_wp_slides')) {
                 ?>
 
         </div>
-
-        </div>
     </section>
 <?php
 }

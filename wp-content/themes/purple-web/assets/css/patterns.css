@@ -1,0 +1,37 @@
+.wp-block-column figure.wp-block-image {
+    margin-bottom: 0;
+}
+
+
+.wp-block-column p:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+.bg-banner {
+    padding: 2em;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bg-banner-image__container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.bg-banner-image__container figure {
+    width: 100%;
+    height: 100%;
+
+}
+
+.bg-banner-image__container figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.bg-banner-image__container {
+    position: relative;
+}

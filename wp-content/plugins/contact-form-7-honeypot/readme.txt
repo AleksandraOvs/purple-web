@@ -1,14 +1,14 @@
-=== CF7 Apps – [Honeypot and hCAPTCHA for Contact Form 7] ===
+=== CF7 Apps – Honeypot, Database, Redirection, Webhook, and Addons for Contact Form 7 ===
 Tags: anti-spam, spam protection, captcha, honeypot, cf7 database
-Requires at least: 4.8
-Tested up to: 6.8
-Stable tag: 3.2.0
-Requires PHP: 5.6
+Requires at least: 6.7 or higher
+Tested up to: 7.1.2
+Stable tag: 3.8.0
+Requires PHP: 7.4 or higher
 Contributors: wpexpertsio
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add hCaptcha and Honeypot to Contact Form 7 with CF7 Apps. Improve form security, lightweight, and no unnecessary code.
+Add hCaptcha, Honeypot, and Redirection to Contact Form 7 with CF7 Apps, and generate forms effortlessly with AI. Improve form security, keep it lightweight, and avoid unnecessary code.
 
 == Description ==
 
@@ -26,7 +26,14 @@ Right out of the box, CF7 Apps includes:
 ✅ **Honeypot App**
 ✅ **hCaptcha App**
 ✅ **Database Entries App**
+✅ **Export CSV Entries**
+✅ **Weekly Summary Reports**
+✅ **Centralized Dashboard**
 ✅ **Redirection App**
+✅ **Webhook App**
+✅ **ACF Integeration**
+✅ **AI Form Generator**
+
 💡 **[Suggest a Feature](https://cf7apps.com/submit-idea/?utm_source=wp_org&utm_medium=readme&utm_campaign=suggest_a_feature)**
 
 And that’s just the beginning.
@@ -38,9 +45,41 @@ The Entries Database App stores all Contact Form 7 submissions directly to your 
 
 Our **Honeypot Contact Form 7 extension** creates a hidden field inside your Contact Form 7 forms. Real users never see it, but bots do—and that's how the bots fall for the trap. It blocks automated spam before it even hits your inbox.
 
+🌟 **Export Contact Form 7 Entries to CSV**
+
+Easily export your stored form submissions directly into CSV format with a single click. Download your submission records filtered by form or date range for seamless offline analysis, backups, and CRM importing.
+
+🌟 **Automated Weekly Summary Emails**
+
+Stay updated on your form performance without logging into WordPress every day. Receive automated weekly email reports highlighting your total form submissions, new inquiries, and blocked spam attempts.
+
+🌟 **Modern Centralized Dashboard & Quick Access**
+
+Monitor your form ecosystem from a single unified hub. View real-time submission statistics, verify Domain Authentication health (SPF, DKIM, DMARC, BIMI), and navigate quickly across settings using the floating Quick Access dock widget.
+
 🌟 **Add hCaptcha to Contact Form 7**
 
 Protect your forms from spam bots using **hCaptcha,** a privacy-friendly alternative to Google reCAPTCHA. This extension integrates directly with CF7 and works instantly after setup. No coding is required, and no extra plugins are needed. Just set up your site keys and you're done.
+
+🌟 **Manage & View Contact Form 7 Entries**
+
+Store, view, and manage all your Contact Form 7 submissions directly inside your WordPress dashboard. This extension logs every form entry automatically, giving you an organized record of user submissions. No coding or third-party tools required just activate and start tracking instantly.
+
+🌟 **Redirect Users After Form Submission**
+
+Easily redirect users to any internal or external page after submitting a form. This extension lets you control the post-submission experience with custom URLs, thank-you pages, or marketing funnels. No coding needed configure your redirect URL and it works immediately.
+
+🌟 **Send Form Data via Webhooks**
+
+Automatically forward your Contact Form 7 submission data to any external service using **webhooks.**This extension enables seamless API integrations, automation workflows, and third-party connections. No additional plugins or coding required just add your webhook URL and you’re ready to go.
+
+🌟 **Integrate ACF Fields into Your Forms**
+
+Easily pull Advanced Custom Fields (ACF) data into your Contact Form 7 forms using the built-in ACF field tags. This integration lets you map and display your custom ACF fields directly inside CF7 without any extra plugins or coding. Just enable the feature, select your ACF fields, and your form is ready to use.
+
+🌟 **Generate Forms Instantly with AI**
+
+Create powerful Contact Form 7 forms in seconds using the built-in AI Form Generator. Simply enter your requirements, and the AI will generate a complete, ready-to-use form tailored to your needs, with no manual setup or coding required. Just enable the feature, provide your prompt, and your form is ready to go.
 
 **NOTE:**
 The best thing is that both features work independently. You can run them alone or together based on your site’s needs.
@@ -50,7 +89,14 @@ The best thing is that both features work independently. You can run them alone 
 With the CF7 Apps, you can do the following:
   ✔️ Trap bots using a honeypot field without affecting users
   ✔️ Add hCaptcha to Contact Form 7 for privacy-first anti-spam
+  ✔️ Export form entries to CSV for offline reporting, spreadsheet analysis, or CRM imports
+  ✔️ Receive automated weekly summary emails with form submission totals and spam metrics
+  ✔️ Manage form health, domain authentication, and app controls from a centralized dashboard
   ✔️ Store and manage Contact Form 7 entries directly in WordPress
+  ✔️ Redirect your Contact Form 7 submissions to any internal or external page.
+  ✔️ Send your form data to any third-party service or custom endpoint through our Webhook.
+  ✔️ Display dynamic ACF field values inside your Contact Form 7 forms for personalized entries.
+  ✔️ Instantly generate dynamic, ready-to-use forms with AI based on your input and requirements.
 
 ==Why Should You Install CF7 Apps?==
 
@@ -62,8 +108,23 @@ With the CF7 Apps, you can do the following:
 
 We built CF7 Apps for users who want more power without abandoning the simplicity of Contact Form 7.
 
+== Try Our Other Awesome WordPress Plugins ==
+
+* **[Post SMTP:](https://wordpress.org/plugins/post-smtp/)** Reliable WordPress email delivery plugin with detailed email logs and multiple SMTP integrations.  
+* **[Gutena Forms:](https://wordpress.org/plugins/gutena-forms/)** Create modern, responsive contact forms directly in the Gutenberg block editor. Includes advanced fields, spam protection (reCAPTCHA & Cloudflare Turnstile), and entry management.  
+* **[WP EasyPay:](https://wordpress.org/plugins/wp-easy-pay/)** Accept Square payments and donations easily on your WordPress site.  
+* **[Password Protected:](https://wordpress.org/plugins/password-protected/)** Secure your WordPress site, posts, pages, and categories with simple password protection.  
+* **[Advanced File Manager:](https://wordpress.org/plugins/file-manager-advanced/)** Manage and organize WordPress files effortlessly from your dashboard.  
+* **[WC Shop Sync:](https://wordpress.org/plugins/wc-shop-sync/)** Add Square payments and sync WooCommerce products, customers, and orders with Square POS.  
+* **[myCred:](https://wordpress.org/plugins/mycred/)** Add gamification, rewards, ranks, and a points management system to your WordPress website.  
+* **[Bookify:](https://wordpress.org/plugins/bookify/)** Your complete online bookings and appointment scheduling solution for WordPress.  
+* **[All In One Login:](https://wordpress.org/plugins/aio-login/)** Secure your WordPress login page, change wp-login.php URL, and add social logins including Google, Facebook, Microsoft, and LINE.  
+* **[New User Approve:](https://wordpress.org/plugins/new-user-approve/)** Control new user registrations by approving or denying signups.  
+* **[WP Experts WooCommerce Store:](https://wpexperts.io/)** Explore premium WooCommerce plugins and solutions by WPExperts.  
+
+
 ==Contribute or Report Issues==
-Do you have a feature request or bug to report? Contact us via the [official Support Channel.](https://wordpress.org/support/plugin/contact-form-7-honeypot) 
+Do you have a feature request or bug to report? Contact us via the [official Support Channel.](https://wordpress.org/support/plugin/contact-form-7-honeypot)
 
 
 == Installation ==
@@ -91,43 +152,62 @@ While the basic settings should keep most people happy, we've added several filt
 For examples of the above, please see this [recipe Gist](https://gist.github.com/nocean/953b1362b63bd3ecf68c).
 
 
-== Frequently Asked Questions == 
+== Frequently Asked Questions ==
 
-=How do I add hCaptcha to Contact Form 7?=
-Activate the hCaptcha App inside CF7 Apps, enter your site keys, error messages, and save settings. That’s it. Now, you’ll see the hCaptcha tag in your Contact Form 7 form settings. 
+= How do I add hCaptcha to Contact Form 7? =
+Activate the hCaptcha App inside CF7 Apps, enter your site keys, error messages, and save settings. That’s it. Now, you’ll see the hCaptcha tag in your Contact Form 7 form settings.
 
-=What is Contact Form 7?=
+= What is Contact Form 7? =
 Contact Form 7 is a long-standing WordPress plugin that lets you build and manage contact forms on your site. It supports multiple forms, customization, and various integrations—all without writing any code.
 
-=Will CF7 Apps slow down my site?=
+= Will CF7 Apps slow down my site? =
 No. Each addon works independently. You only activate the features you want. That keeps your website fast and your backend clean.
 
-=How do I report a security issue?=
+= How do I export Contact Form 7 entries to CSV? =
+Navigate to the **Entries** tab in the CF7 Apps dashboard, filter submissions by form or date range if needed, and click the **Export CSV** button to download your entries instantly.
+
+= What are Weekly Summary Reports? =
+Weekly Summary Reports automatically send an email overview to the administrator email address detailing total form submissions received and spam attempts blocked during the week.
+
+= What does the CF7 Apps Dashboard offer? =
+The redesigned dashboard provides an overview of submission statistics, domain authentication checks (SPF, DKIM, DMARC, BIMI), Post SMTP integration status, and a floating Quick Access dock widget for faster navigation.
+
+= What is the Redirection App? =
+The Redirection App allows you to redirect users to any internal or external page after they submit a Contact Form 7 form. You can easily set custom redirection URLs per form creating smooth user flows without adding any custom code.
+
+= What is the Webhook App? =
+The Webhook App enables you to send your Contact Form 7 form data to any third-party service or custom endpoint. It makes integrations simple by allowing you to push form submissions to CRMs, marketing tools, automation platforms, or any external API without coding.
+
+= Do I need any technical skills to use the AI Form Generator? =
+No, the AI Form Generator is designed to be user-friendly. Just enter your requirements, and it will create a ready-to-use form without any coding or technical expertise.
+
+= How do I report a security issue? =
 If you discover a security vulnerability, please report it to us via the [official Support Channel.](https://wordpress.org/support/plugin/contact-form-7-honeypot) Our team will review, verify, and fix all security-related reports responsibly.
 
 = Can I use more than one Honeypot field in my forms? =
 You sure can, and many users have indicated this helps stop even more spam, as it increases your chances that a bot will get caught in the trap. Just make sure each Honeypot field has a unique name.
 
 = Can I modify the HTML that this plugin outputs? =
-
 Yep! See the **Installation** section for more details and [this Gist](https://gist.github.com/nocean/953b1362b63bd3ecf68c) for examples.
 
 = Does Contact Form 7 save form submissions by default? =
-
 No, Contact Form 7 does not store submissions by default. With the CF7 Apps Entries Database App, you can log every entry directly in your WordPress dashboard and access them anytime.
 
-= Can I filter Contact Form 7 entries by form or date? =
+= How do I integrate ACF fields with Contact Form 7? =
+Enable the **ACF Integration** in CF7 Apps, then use the ACF field tag in your Contact Form 7 form. Select the custom field you created in ACF, and insert the tag into your form. The field will now appear on the frontend form automatically.  
 
+
+= Can I filter Contact Form 7 entries by form or date? =
 Yes, the Entries Database App lets you filter submissions by specific forms or date ranges, making it easier to manage and review the entries you need.
 
 = How do I delete Contact Form 7 entries? =
-
 You can delete individual submissions or bulk delete multiple entries directly from the Entries tab in the CF7 Apps dashboard with just a few clicks.
 
-
 = Where do I report security bugs found in this plugin? =
-
 Please report security bugs found in the source code of the CF7 Apps – [Honeypot and hCAPTCHA for Contact Form 7] plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/e58fd0b7-60aa-4ba8-aeeb-61889936d10c). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
+= My forms fail on cached sites. What should I do? =
+CF7 Apps Honeypot uses signed tokens that work with full-page caching. Since v3.7.0, forms validate honeypot data without relying on server-side transients. If you still see issues, exclude Contact Form 7 pages from full-page cache plugins such as WP Fastest Cache, or ensure JavaScript is not blocked by cookie consent tools before the form loads. You can also force honeypot token refresh on page load with: `add_filter( 'honeypot4cf7_force_refill', '__return_true' );`
 
 = Disclaimer =
 
@@ -143,7 +223,82 @@ CF7 Apps is a third-party plugin and is not officially associated with or endors
 
 == Changelog ==
 
-= 3.2.0 – Octuber 27, 2025 =
+= 3.8.0 - Sep 29, 2026 =
+* NEW - Introduced Weekly Summary Reports to receive automated weekly email summaries of form submissions and blocked spam.
+* NEW - Added CSV Export functionality in the Entries App to easily export form entries.
+* IMPROVEMENT - Redesigned CF7 Apps Dashboard layout featuring Domain Authentication status (SPF, DKIM, DMARC, BIMI), Post SMTP integration card, and unified statistics overview.
+* IMPROVEMENT - Added a Quick Access dock widget on the dashboard.
+* FIX - Resolved false positive spam classifications caused by dynamic honeypot fields.
+* FIX - Resolved global currency fetching and dropdown selection issues.
+* FIX - Resolved PHP debug log warnings and notice placement flow across app settings.
+* TWEAK - Updated dashboard card icons, layout spacing, and add-on links.
+* COMPATIBILITY - Tested and verified compatibility with WordPress 7.1.2 and PHP 8.4.
+
+= 3.7.2 - Aug 6, 2026 =
+* UPDATED - AI Forms Server URL
+
+= 3.7.1 - Aug 06, 2026 =
+* FIX - Fixed issue when CSS is breaking the form layout in some cases.
+
+= 3.7.0 - Aug 3, 2026 =
+* NEW - Introduced new dashboard UI with improved spacing, layout alignment, visual clarity, Modern design & UX.
+* NEW - Added stateless signed honeypot tokens so cached forms validate without server-side transient lookups.
+* NEW - Added replay protection for signed honeypot tokens.
+* FIX - Fixed thousands of honeypot transient entries accumulating in the database and overloading the server.
+* FIX - Fixed honeypot field always being flagged as spam and exposing honeypot detection details in the JSON response.
+* FIX - Fixed form field spacing changes introduced in v3.6.0 that altered form layout and design.
+* FIX - Fixed conflict WP Fastest Cache.
+* FIX - Improved honeypot refill detection for WP Fastest Cache and other caching plugins when WP_CACHE is false.
+* FIX - Renamed misleading honeypot spam log messages for invalid or expired sessions.
+* TWEAK - Improved AI credit exhaustion message to display renewal date instead of generic "Insufficient Balance" error.
+* TWEAK - Removed unnecessary admin email notice from the CF7 Apps dashboard.
+* TWEAK - Added .po and .mo language translation files for internationalization support.
+* TWEAK - Feedback SDK updated to latest version.
+* TWEAK - Honeypot refill responses and frontend script now refresh signed tokens after form submission.
+
+= 3.6.1 - June 09, 2026 =
+* TWEAK - Added additional information and improvements to Spam Detection.
+* FIX - Fixed an issue where Webhooks could interfere with form submissions.
+* FIX - Improved compatibility of the Dynamic Honeypot feature introduced in v3.6.0 with full-page caching environments.
+* FIX - Resolved minor compatibility issues to ensure compatibility with WordPress 7.0.
+
+= 3.6.0 - May 14, 2026 =
+* NEW - Added dynamic field names in Honeypot.
+* IMPROVEMENT - Improved the Entry View popup responsiveness.
+* TWEAK - Improved the visibility and appearance of the sidebar in dashboard.
+* FIX - Removed Form Data availability for the GET method in Webhook settings.
+* FIX - Resolved an issue where the Webhook method and data type unexpectedly changed from GET/Form Data to POST/JSON after saving individual settings.
+
+= 3.5.0 - Apr 23, 2026 =
+* NEW - Introduced AI Form Generator.
+
+= 3.4.0 - Jan 28, 2026 =
+* NEW - Introduced Advanced Custom Fields (ACF) Integration.
+* IMPROVEMENT - Enhanced Entries View for multiple fields in Contact Form 7 and improved submissions display in View Entries.
+* IMPROVEMENT - Optimized query for better performance.
+* FIX - PHP notice in logs after upgrading to 3.1.0.
+* FIX - Resolved automatic spam issues.
+
+= 3.3.2 - Jan 05, 2026 =
+* IMPROVEMENT - CF7 Apps were not visible on individual forms during form creation.
+* IMPROVEMENT - Added Roadmap and Documentation icons to the CF7 Apps dashboard header.
+* IMPROVEMENT - Added a "Spam Stopped" count message in the new Settings section.
+* FIX - Dropdown improvement in Entries.
+* FIX - CF7 entries were not displaying when using the Plain permalink structure.
+
+= 3.3.1 - December 11, 2025 =
+* IMPROVEMENT: Updated the Webhook App Card Description.
+
+= 3.3.0 – December 10 2025 =
+* NEW: Introduced the Webhook App.
+* IMPROVEMENT: Added the enable toggle on individual form settings.
+* IMPROVEMENT: Added compatibility for Global and Individial settings.
+
+= 3.2.1 - November 06, 2025 =
+* NEW - Added Feedback SDK.
+* FIX - There was a prompt about saving changes when there were no changes made in the Contact Form. 
+
+= 3.2.0 – October 27, 2025 =
 * NEW: Introduced the Redirection App.
 * IMPROVEMENT: Added a highlighter for CF7 Apps tags within the Contact Form 7 editor.
 * IMPROVEMENT: Added an informational banner in the Entries App settings for better user guidance.

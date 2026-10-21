@@ -23,7 +23,7 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
      */
     public function __construct() {
         $this->languages = array(
-            ''          => __( 'Default', 'cf7apps' ),
+            'en'          => __( 'English', 'cf7apps' ),
             'af'        => __( 'Afrikaans', 'cf7apps' ),
             'sq'        => __( 'Albanian', 'cf7apps' ),
             'am'        => __( 'Amharic', 'cf7apps' ),
@@ -46,7 +46,6 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
             'cs'        => __( 'Czech', 'cf7apps' ),
             'da'        => __( 'Danish', 'cf7apps' ),
             'nl'        => __( 'Dutch', 'cf7apps' ),
-            'en'        => __( 'English', 'cf7apps' ),
             'eo'        => __( 'Esperanto', 'cf7apps' ),
             'et'        => __( 'Estonian', 'cf7apps' ),
             'fa'        => __( 'Farsi/ Persian', 'cf7apps' ),
@@ -146,7 +145,7 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
         $this->is_pro = false;
         $this->by_default_enabled = false;
         $this->documentation_url = 'https://cf7apps.com/docs/spam-protection/contact-form-7-hcaptcha/';
-        $this->parent_menu = __( 'Spam Protection', 'cf7apps' );
+        $this->parent_menu = 'spam-protection';
 
         add_action( 'wp_footer', array( $this, 'enqueue_script' ) );
         add_action( 'wpcf7_init', array( $this, 'register_shortcode' ), 10 );
@@ -175,7 +174,7 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
                         'type'              => 'text',
                         'required'          => true,
                         'required_message'  => __( 'Site key is required.', 'cf7apps' ),
-                        'description'       => __( 'Enter your site key. Don\'t have one? <a href="https://dashboard.hcaptcha.com/sites">Click here</a> to generate a new key.', 'cf7apps' ),
+                        'description'       => __( 'Enter your site key. Don\'t have one? <a href="https://dashboard.hcaptcha.com/sites" target="_blank">Click here</a> to generate a new key.', 'cf7apps' ),
                         'class'             => 'xl'
                     ),
                     'secret_key'  =>  array(
@@ -183,7 +182,7 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
                         'type'              => 'text',
                         'required'          => true,
                         'required_message'  => __( 'Secret key is required.', 'cf7apps' ),
-                        'description'       => __( 'Enter your secret key. Don\'t have one? <a href="https://dashboard.hcaptcha.com/settings/secrets">Click here</a> to generate a new key.', 'cf7apps' ),
+                        'description'       => __( 'Enter your secret key. Don\'t have one? <a href="https://dashboard.hcaptcha.com/settings/secrets" target="_blank">Click here</a> to generate a new key.', 'cf7apps' ),
                         'class'             => 'xl'
                     ),
                     'invalid_message' =>  array(
@@ -196,7 +195,8 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
                     'language' =>  array(
                         'title'             => __( 'Force hCaptcha to render in a specific language.', 'cf7apps' ),
                         'type'              => 'select',
-                        'default'           => '',
+                        // Set English as the default selected language.
+                        'default'           => 'en',
                         'description'       => __( 'Choose a language for your CAPTCHA display.', 'cf7apps' ),
                         'class'             => 'xs',
                         'options'           => $this->languages
@@ -238,6 +238,10 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
 
         $site_key = $this->get_option( 'site_key' );
         $global_selected_language = $this->get_option( 'language' );
+        // Fall back to English when no global language has been saved.
+        if ( empty( $global_selected_language ) ) {
+            $global_selected_language = 'en';
+        }
         
         $this->selected_language = ! empty( $tag->get_option( 'language' )[0] ) ? $tag->get_option( 'language' )[0] : '';
         $this->selected_language = empty( $this->selected_language ) ? $global_selected_language : $this->selected_language;
@@ -308,14 +312,12 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
     public function validate_hcaptcha( $result, $tags ) { 
         if( $this->get_option( 'is_enabled' ) ) {
             $has_tag = false;
+            $invalid_message = '';
 
             foreach ( $tags as $tag ) {
                 if ( $tag->type === 'cf7apps_hcaptcha' ) {
                     $has_tag = true;
-                    $invalid_message = $tag->get_option( 'invalid-message' );
-                    if ( is_array( $invalid_message ) ) {
-                        $invalid_message = implode( ' ', $invalid_message );
-                    }
+                    $invalid_message = $this->resolve_tag_invalid_message( $tag );
                     $invalid_message = $invalid_message ?: $this->get_option( 'invalid_message' );
                     break;
                 }
@@ -367,6 +369,40 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
     }
 
     /**
+     * Resolve hCaptcha invalid message from tag payload.
+     *
+     * Order:
+     * 1. New quoted value format (`data-tag-part="value"` in generator).
+     * 2. Legacy option format (`invalid-message:...`).
+     *
+     * @since 3.5.0
+     *
+     * @param WPCF7_FormTag|WPCF7_Shortcode $tag Form tag instance.
+     * @return string
+     */
+    private function resolve_tag_invalid_message( $tag ) {
+        $value_message = '';
+
+        if ( isset( $tag->raw_values ) && is_array( $tag->raw_values ) && ! empty( $tag->raw_values ) ) {
+            $value_message = trim( (string) $tag->raw_values[0] );
+        } elseif ( isset( $tag->values ) && is_array( $tag->values ) && ! empty( $tag->values ) ) {
+            $value_message = trim( (string) $tag->values[0] );
+        }
+
+        if ( '' !== $value_message ) {
+            return $value_message;
+        }
+
+        $legacy_message = $tag->get_option( 'invalid-message' );
+
+        if ( is_array( $legacy_message ) ) {
+            $legacy_message = implode( ' ', $legacy_message );
+        }
+
+        return trim( (string) $legacy_message );
+    }
+
+    /**
      * Renders button on form | Action Callback
      * 
      * @since 3.0.0
@@ -388,12 +424,27 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
         // Get current values if available
         $error_message = $this->get_option( 'invalid_message' );
         $language = $this->get_option( 'language' );
+        // Ensure English is used as the default selection in the tag generator as well.
+        // if ( empty( $language ) ) {
+        //     $language = 'en';
+        // }
         $size = isset( $args['size'] ) ? $args['size'] : 'normal';
         $custom_css = isset( $args['custom_css'] ) ? $args['custom_css'] : '';
 
         ?>
         <header class="description-box">
             <h3><?php echo $this->title; ?></h3>
+            <p>
+                <?php 
+                    printf(
+                        '%s <a href="%s" target="_blank">%s</a> %s.',
+                        esc_html__( 'Generate a form-tag for adding an hCaptcha verification widget to stop spam bots. Check out', 'cf7apps' ),
+                        esc_url( admin_url( 'admin.php?page=cf7apps#/settings/hcaptcha' ) ),
+                        esc_html__( 'hCaptcha Settings', 'cf7apps' ),
+                        esc_html__( 'for more settings/info', 'cf7apps' )
+                    );
+                ?>
+            </p>
             <div style="border-left: 4px solid #3399ff; background: #e6f4ff; padding: 1px 14px; margin-bottom: 10px; border-radius: 5px;">
                 <p style="margin: 7px auto;"><?php 
                     printf( 
@@ -424,7 +475,7 @@ class CF7Apps_hCaptcha_App extends CF7Apps_App {
                 <legend id="<?php echo esc_attr( $args['content'] ); ?>-invalid-message-legend">
                     <?php esc_html_e( 'Error message', 'cf7apps' ); ?>
                 </legend>
-                <input type="text" value="<?php echo esc_attr( $error_message ); ?>" data-tag-option="invalid-message:" data-tag-part="option" name="invalid-message" class="invalid-message-value oneline option" id="<?php echo esc_attr( $args['content'] . '-invalid-message' ); ?>" />
+                <input type="text" value="<?php echo esc_attr( $error_message ); ?>" data-tag-part="value" name="invalid-message" class="invalid-message-value oneline value" id="<?php echo esc_attr( $args['content'] . '-invalid-message' ); ?>" />
                 <br />
                 <label><?php esc_html_e( 'Enter a custom message to display when CAPTCHA validation fails.', 'cf7apps' ); ?></label>
             </fieldset>

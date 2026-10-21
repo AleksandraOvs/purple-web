@@ -1,0 +1,67 @@
+<?php
+if ($steps = carbon_get_post_meta(get_the_ID(), 'crb_why_list')) {
+?>
+    <section class="section-steps">
+        <div class="fixed-container">
+            <div class="section-heading light-content">
+
+                <?php
+                if ($steps_head = carbon_get_post_meta(get_the_ID(), 'crb_why_head')) {
+                    echo '<h2 class="title">' . $steps_head . '</h2>';
+                }
+                ?>
+
+                <?php
+                if ($steps_desc = carbon_get_post_meta(get_the_ID(), 'crb_why_desc')) {
+                    echo '<div class="section-description">' . $steps_desc . '</div>';
+                }
+                ?>
+            </div>
+
+            <div class="section-steps__inner">
+                <ul class="steps-list">
+                    <?php $i = 1; ?>
+                    <?php
+                    foreach ($steps as $step) {
+
+                    ?>
+                        <li class="steps-list__item">
+
+                            <div class="steps-list__item__inner">
+                                <?php
+                                if ($step_icon = $step['crb_why_image']) {
+                                    $step_icon_url = wp_get_attachment_image_url($step_icon, 'full');
+                                ?>
+                                    <div class="step-img" <?php if ($bg_color = $step['crb_why_image_bg']) : echo 'style="background-color:' . $bg_color . '"';
+                                                            endif; ?>><img src="<?php echo $step_icon_url ?>" alt=""></div>
+                                <?php
+                                } else {
+                                    echo '<div class="num">0' . $i . '</div>';
+                                }
+                                ?>
+
+
+                                <?php echo '<h3>' . $step['crb_why_head'] . '</h3>' ?>
+
+
+                                <div class="step_description">
+                                    <?php echo $step['crb_why_text'] ?>
+                                </div>
+                                <?php
+                                $i++; ?>
+                            </div>
+
+
+
+                        </li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+<?php
+}
+?>

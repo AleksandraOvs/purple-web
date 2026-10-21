@@ -22,7 +22,7 @@
           <div class="breadcrumbs__list">
             <?php echo site_breadcrumbs(); ?>
           </div>
-          <h2 class="title element-tobottom"><?php the_title(); ?></h2>
+          <h2 class="title"><?php the_title(); ?></h2>
         </div>
 
         <?php get_template_part('template-parts/tags') ?>

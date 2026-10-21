@@ -40,6 +40,9 @@ class CF7Apps {
         }
 
         $this->includes();
+
+        cf7apps_maybe_migrate_dynamic_honeypot_setting();
+
         $this->register_hooks();
         $this->add_actions();
     }
@@ -87,6 +90,8 @@ class CF7Apps {
     public function includes() {
         require_once 'cf7apps-functions.php';
         require_once 'abstract/abstract-cf7apps-app.php';
+        require_once 'class-cf7apps-recommended-plugins.php';
+        require_once 'class-cf7apps-domain-authentication.php';
         require_once 'apps/cf7apps-init-apps.php';
         require_once 'rest-api/class-cf7apps-base-rest-api.php';
         require_once 'rest-api/wp-admin/v1/rest-api.php';
@@ -99,6 +104,7 @@ class CF7Apps {
      */
     public function register_hooks() {
         register_activation_hook( CF7APPS_PLUGIN, array( $this, 'activate' ) );
+        register_deactivation_hook( CF7APPS_PLUGIN, array( $this, 'deactivate' ) );
     }
 
     /**
@@ -120,6 +126,17 @@ class CF7Apps {
 
             cf7apps_save_app_settings( 'honeypot', $default_settings );
         }
+        
+        flush_rewrite_rules( false );
+    }
+
+    /**
+     * Deactivation hook
+     * 
+     * @since 3.3.0
+     */
+    public function deactivate() {
+        flush_rewrite_rules( false );
     }
 
     /**
@@ -174,15 +191,25 @@ class CF7Apps {
             )
         );
 
+        wp_set_script_translations(
+            'cf7apps-script',
+            'cf7apps',
+            CF7APPS_PLUGIN_DIR . '/languages'
+        );
+
         wp_localize_script(
             'cf7apps-script',
             'CF7Apps',
-            array(
-                'hasPro'        => true,
-                'restURL'       => rest_url(),
-                'nonce'         => wp_create_nonce( 'wp_rest' ),
-                'assetsURL'     => CF7APPS_PLUGIN_DIR_URL . '/assets',
-                'appIndexURL'   =>  admin_url( 'admin.php?page=cf7apps' )
+            apply_filters(
+                'cf7apps_localize_script',
+                array(
+                    'hasPro'        => cf7apps_has_pro(),
+                    'restURL'       => rest_url(),
+                    'nonce'         => wp_create_nonce( 'wp_rest' ),
+                    'assetsURL'     => CF7APPS_PLUGIN_DIR_URL . '/assets',
+                    'appIndexURL'   =>  admin_url( 'admin.php?page=cf7apps' ),
+                    'pluginVersion' => CF7APPS_VERSION,
+                )
             )
         );
 

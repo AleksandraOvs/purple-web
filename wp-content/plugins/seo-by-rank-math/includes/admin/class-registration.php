@@ -119,13 +119,13 @@ class Registration {
 	private function get_registration_url( $status ) {
 		if ( 'cancel' === $status ) {
 			// User canceled activation.
-			Helper::add_notification( __( 'Rank Math plugin could not be connected.', 'rank-math' ), [ 'type' => 'error' ] );
+			Helper::add_notification( __( 'Rank Math plugin could not be connected.', 'seo-by-rank-math' ), [ 'type' => 'error' ] );
 			return Security::remove_query_arg_raw( [ 'rankmath_connect', 'rankmath_auth' ] );
 		}
 
 		if ( 'banned' === $status ) {
 			// User or site banned.
-			Helper::add_notification( __( 'Unable to connect Rank Math.', 'rank-math' ), [ 'type' => 'error' ] );
+			Helper::add_notification( __( 'Unable to connect Rank Math.', 'seo-by-rank-math' ), [ 'type' => 'error' ] );
 			return Security::remove_query_arg_raw( [ 'rankmath_connect', 'rankmath_auth' ] );
 		}
 
@@ -146,7 +146,7 @@ class Registration {
 				exit;
 			}
 
-			// Redirect to the wizard is registration successful.
+			// Redirect to the wizard if registration successful.
 			if ( Param::get( 'page' ) === 'rank-math-registration' ) {
 				return Helper::get_admin_url( 'wizard' );
 			}
@@ -208,8 +208,8 @@ class Registration {
 	 */
 	public function admin_menu() {
 		add_menu_page(
-			esc_html__( 'Rank Math', 'rank-math' ),
-			esc_html__( 'Rank Math SEO', 'rank-math' ),
+			esc_html__( 'Rank Math', 'seo-by-rank-math' ),
+			esc_html__( 'Rank Math SEO', 'seo-by-rank-math' ),
 			'manage_options',
 			$this->slug,
 			[ $this, 'render_page' ]
@@ -238,7 +238,7 @@ class Registration {
 
 		// Wizard.
 		wp_enqueue_media();
-		wp_enqueue_style( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/css/setup-wizard.css', [ 'wp-admin', 'buttons', 'rank-math-common', 'rank-math-cmb2' ], rank_math()->version );
+		wp_enqueue_style( 'rank-math-wizard', rank_math()->plugin_url() . 'assets/admin/css/setup-wizard.css', [ 'wp-admin', 'buttons', 'wp-components', 'rank-math-common', 'rank-math-cmb2' ], rank_math()->version );
 		wp_enqueue_script( 'rank-math-registration', rank_math()->plugin_url() . 'assets/admin/js/registration.js', [ 'lodash', 'react', 'react-dom', 'wp-element', 'wp-data', 'rank-math-components' ], rank_math()->version, true );
 		Helper::add_json( 'logo', esc_url( rank_math()->plugin_url() . 'assets/admin/img/logo.svg' ) );
 		Helper::add_json( 'registerNonce', wp_create_nonce( 'rank-math-wizard' ) );

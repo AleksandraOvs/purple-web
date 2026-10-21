@@ -62,6 +62,8 @@ class Sitemap {
 			$this->filter( 'rank_math/sitemap/build_type', 'rank_math_build_sitemap_filter' );
 			$this->filter( 'rank_math/sitemap/entry', 'exclude_hidden_language_posts', 10, 3 );
 		}
+
+		$this->action( 'rank_math/settings/after_save', 'clear_cache' );
 	}
 
 	/**
@@ -141,11 +143,11 @@ class Sitemap {
 	 */
 	public function new_post_type_notice( $notice, $count ) {
 		/* Translators: placeholder is the post type name. */
-		$notice = __( 'Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+		$notice = __( 'Rank Math has detected a new post type: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'seo-by-rank-math' );
 
 		if ( $count > 1 ) {
 			/* Translators: placeholder is the post type names separated with commas. */
-			$notice = __( 'Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'rank-math' );
+			$notice = __( 'Rank Math has detected new post types: %1$s. You may want to check the settings of the <a href="%2$s">Titles &amp; Meta page</a> and <a href="%3$s">the Sitemap</a>.', 'seo-by-rank-math' );
 		}
 
 		return $notice;
@@ -162,7 +164,7 @@ class Sitemap {
 	 * Exclude object from sitemap.
 	 *
 	 * @param  int     $object_id   Object id.
-	 * @param  string  $object_type Object type. Accetps: post, term, user.
+	 * @param  string  $object_type Object type. Accepts: post, term, user.
 	 * @param  boolean $is_include  Add or Remove object.
 	 */
 	public static function exclude_object( $object_id, $object_type, $is_include ) {
@@ -305,6 +307,9 @@ class Sitemap {
 	 * @param int $max_entries Entries per sitemap.
 	 */
 	public static function maybe_redirect( $count, $max_entries ) {
+		if ( ! apply_filters( 'rank_math/sitemap/maybe_redirect', true ) ) {
+			return;
+		}
 		$current_page = (int) get_query_var( 'sitemap_n' );
 		if ( ! $current_page && $count > $max_entries ) {
 			Helper::redirect( preg_replace( '/\.xml$/', '1.xml', Helper::get_current_page_url() ) );
@@ -329,5 +334,12 @@ class Sitemap {
 		 * @return string
 		 */
 		return apply_filters( 'rank_math/sitemap/index/slug', 'sitemap_index' );
+	}
+
+	/**
+	 * Ensure sitemap cache is invalidated when settings change.
+	 */
+	public function clear_cache() {
+		Cache::invalidate_storage();
 	}
 }

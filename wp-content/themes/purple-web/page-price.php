@@ -8,12 +8,12 @@
 <main id="primary" class="site-main">
     <section class="section__post-content">
         <div class="fixed-container">
-            
-                <div class="breadcrumbs__list">
-                    <?php echo site_breadcrumbs(); ?>
-                </div>
-                <h1 class="title element-tobottom"><?php the_title() ?></h1>
-           
+
+            <div class="breadcrumbs__list">
+                <?php echo site_breadcrumbs(); ?>
+            </div>
+            <h1 class="title"><?php the_title() ?></h1>
+
 
             <?php
             if ($chapters = carbon_get_post_meta(get_the_ID(), 'crb_price_chapters')) {

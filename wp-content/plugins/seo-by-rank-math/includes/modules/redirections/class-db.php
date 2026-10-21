@@ -35,27 +35,49 @@ class DB {
 	 * @return array
 	 */
 	public static function get_counts() {
-		static $redirction_counts;
-		if ( ! is_null( $redirction_counts ) ) {
-			return $redirction_counts;
+		static $redirection_counts;
+		if ( ! is_null( $redirection_counts ) ) {
+			return $redirection_counts;
 		}
 
-		$redirction_counts = self::table()
+		$redirection_counts = self::table()
 			->selectSum( "status = 'active'", 'active' )
 			->selectSum( "status = 'inactive'", 'inactive' )
 			->selectSum( "status = 'trashed'", 'trashed' )
 			->one( ARRAY_A );
 
-		$redirction_counts = array_map(
+		$redirection_counts = array_map(
 			function ( $value ) {
 				return $value ? $value : 0;
 			},
-			$redirction_counts
+			$redirection_counts
 		);
 
-		$redirction_counts['all'] = $redirction_counts['active'] + $redirction_counts['inactive'];
+		$redirection_counts['all'] = $redirection_counts['active'] + $redirection_counts['inactive'];
 
-		return $redirction_counts;
+		return $redirection_counts;
+	}
+
+	/**
+	 * Get redirection counts grouped by header code (redirect type), e.g. [ 301 => 12, 302 => 4 ].
+	 * Excludes trashed redirections, matching the 'all' count in get_counts() above.
+	 *
+	 * @return array
+	 */
+	public static function get_counts_by_type() {
+		$rows = self::table()
+			->select( [ 'header_code' ] )
+			->selectCount( '*', 'count' )
+			->where( 'status', '!=', 'trashed' )
+			->groupBy( 'header_code' )
+			->get( ARRAY_A );
+
+		$by_type = [];
+		foreach ( $rows as $row ) {
+			$by_type[ (int) $row['header_code'] ] = (int) $row['count'];
+		}
+
+		return $by_type;
 	}
 
 	/**
