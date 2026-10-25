@@ -929,6 +929,15 @@ section.work-steps {
     .about-list {
         width: 100%;
     }
+
+    .about-list__item,
+    .about-description {
+        width: 100%;
+    }
+
+    .services-parts__list__item {
+        width: 100%;
+    }
 }
 
 @media (max-width: 576px) {
@@ -937,4 +946,23 @@ section.work-steps {
         grid-template-columns: 1fr;
         gap: 2em;
     }
+}
+
+@media (max-width: 480px) {
+    .services-parts__list__item__head {
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+
+    .services-parts__list__item {
+        padding: .5em;
+    }
+
+    .services-parts__list__item__image {
+        position: relative;
+        left: unset;
+        top: unset;
+
+    }
+
 }
